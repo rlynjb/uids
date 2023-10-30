@@ -3,6 +3,10 @@
 install vue using vue-cli
 follow vue styleguidist instruction here: https://vue-styleguidist.github.io/docs/GettingStarted.html#_1-install
 
+install tailwindcss
+- https://tailwindcss.com/docs/installation
+- add to vue-cli: https://www.npmjs.com/package/vue-cli-plugin-tailwind
+
 Built with vue3 and vue styleguist
 
 Backlog:
