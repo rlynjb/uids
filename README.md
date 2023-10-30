@@ -1,5 +1,10 @@
 # uids
 
+install vue using vue-cli
+follow vue styleguidist instruction here: https://vue-styleguidist.github.io/docs/GettingStarted.html#_1-install
+
+Built with vue3 and vue styleguist
+
 ## Project setup
 ```
 npm install
