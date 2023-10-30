@@ -10,11 +10,12 @@
         v-if="rows.length"
         class="table-auto table-zebra table-normal shadow"
       >
-        <thead class="bg-secondary text-white text-left">
+        <thead class="bg-black text-white text-left">
           <tr>
             <th
               v-for="(col, colIndex) in columns"
               :key="'col' + colIndex"
+              class="pt-3 pb-3 pl-4 pr-4"
               :class="(col.align) ? col.align : ''"
             >
               <div 
@@ -43,6 +44,7 @@
             <td
               v-for="(rowVal, rowKey) in row.display"
               :key="'rowkey' + rowKey"
+              class="pt-3 pb-3 pl-4 pr-4"
               :class="(row.settings_align[rowKey]) ? row.settings_align[rowKey] : ''"
             >
               <span
@@ -264,6 +266,8 @@ export default {
 </script>
 
 <style scope>
+@import '../../assets/tailwind.css';
+
 .table-widget table {
   width: 100%;
 }
@@ -272,7 +276,6 @@ export default {
 }
 .table-widget td,
 .table-widget th {
-  @apply pt-3 pb-3 pl-4 pr-4;
   font-size: 0.875rem;
   line-height: 1.2rem;
   vertical-align: text-top;
@@ -286,8 +289,6 @@ export default {
 }
 
 .table-widget .row-link {
-  @apply text-primary;
-
   cursor: pointer;
 }
 </style>
