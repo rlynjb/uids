@@ -6,6 +6,7 @@ follow vue styleguidist instruction here: https://vue-styleguidist.github.io/doc
 Built with vue3 and vue styleguist
 
 Backlog:
+- wire up tailwindcss and daisycss
 - wire up typescript
 
 ## Project setup

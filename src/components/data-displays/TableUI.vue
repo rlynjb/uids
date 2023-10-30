@@ -106,7 +106,7 @@ interface IColumn {
 }
 */
 /**
- * The only true Table.
+ * Table UI component built with 2Dimensional Array
  * @displayName TableUI
  */
 export default {
