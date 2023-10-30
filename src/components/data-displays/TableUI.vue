@@ -293,17 +293,18 @@ export default {
 </style>
 
 <docs lang="md">
-  ### how to use component.
+  ### How to use component.
 
-  ##### How to set basic column settings. name and field properties.
+  How to set basic column settings. name and field properties.
+  
   ```js
   <TableUI />
   ```
 
-  ##### How to make a data record a link.
-  ##### How to add a button.
-  ##### How to text align a data record.
-  ##### How to make a column sortable.
+  How to make a data record a link.
+  How to add a button.
+  How to text align a data record.
+  How to make a column sortable.
 
   ```js
   <TableUI />
