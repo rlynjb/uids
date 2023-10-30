@@ -4,11 +4,15 @@ module.exports = {
 	title: 'Default Style Guide',
 	// components: 'src/components/**/[A-Z]*.vue',
 	// defaultExample: true,
-	// sections: [
-	//   {
-	//     name: 'First Section',
-	//     components: 'src/components/**/[A-Z]*.vue'
-	//   }
-	// ],
+	sections: [
+		{
+			name: 'Introduction',
+			components: 'src/components/AppButton.vue'
+		},
+		{
+			name: 'Data Displays',
+			components: 'src/components/data-displays/[A-Z]*.vue'
+		}
+	],
 	
 }

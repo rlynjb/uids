@@ -8,9 +8,9 @@
     <div class="cols-span-6">
       <table
         v-if="rows.length"
-        class="table-auto table-zebra table-normal"
+        class="table-auto table-zebra table-normal shadow"
       >
-        <thead>
+        <thead class="bg-secondary text-white text-left">
           <tr>
             <th
               v-for="(col, colIndex) in columns"
@@ -264,13 +264,8 @@ export default {
 </script>
 
 <style scope>
-/*
 .table-widget table {
-  @apply shadow;
   width: 100%;
-}
-.table-widget thead {
-  @apply bg-secondary text-white text-left;
 }
 .table-widget th .sortable {
   color: #bcbcbc;
@@ -295,5 +290,22 @@ export default {
 
   cursor: pointer;
 }
-*/
 </style>
+
+<docs lang="md">
+  ### how to use component.
+
+  ##### How to set basic column settings. name and field properties.
+  ```js
+  <TableUI />
+  ```
+
+  ##### How to make a data record a link.
+  ##### How to add a button.
+  ##### How to text align a data record.
+  ##### How to make a column sortable.
+
+  ```js
+  <TableUI />
+  ```
+</docs>
