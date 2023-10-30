@@ -1,7 +1,7 @@
 
 module.exports = {
 	// set your styleguidist configuration here
-	title: 'Default Style Guide',
+	title: 'UIDS',
 	// components: 'src/components/**/[A-Z]*.vue',
 	// defaultExample: true,
 	sections: [
