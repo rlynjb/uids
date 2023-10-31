@@ -40,6 +40,8 @@
 </template>
 
 <script lang="ts">
+import { ref, computed, onMounted } from 'vue'
+
 /**
  * A simple Steps/Progress UI using Array to store states. and using Hash object to store visited history.
  * @displayName StepsUI
@@ -57,88 +59,35 @@ export default {
     },
   },
 
-  data() {
-    return {
-      l_progress: [] as any[],
-      visited_lookup: {} as any,
-    }
-  },
-
-  computed: {
-    currentStep() {
-      return this.l_progress.findIndex(p => p.active)
-    },
-  },
-
-  mounted() {
-    this.l_progress = this.progress
-    // set active property
-    this.l_progress.forEach((v, indexV) => {
-      if (indexV === 0) {
-        v.active = true
-      } else {
-        v.active = false
-      }
+  setup(props: any, context: any) {
+    const l_progress = ref<any[]>([])
+    const visited_lookup = ref({}) as any
+    const currentStep = computed(() => {
+      return l_progress.value.findIndex(p => p.active)
     })
-    this.highlightSteps()
-  },
 
-  methods: {
-    /**
-     * Go to previous step.
-     * 
-     * @public
-     */
-    gotoPrev() {
-      this.gotoStep(this.currentStep - 1)
-    },
-    /**
-     * Go to next step.
-     * 
-     * @public
-     */
-    gotoNext() {
-      this.gotoStep(this.currentStep + 1)
-    },
-    /**
-     * Go to a step
-     * 
-     * @param {number} 1
-     * @public
-     */
-    gotoStep(newActiveStep: number) {
-      this.l_progress[this.currentStep].active = false
-      this.l_progress[newActiveStep].active = true
-
-      this.highlightSteps()
-
-      /*
-      const cleanOutput = this.l_progress.map(v => {
-        return { label: v.label, active: v.active }
+    onMounted(() => {
+      l_progress.value = props.progress
+      // set active property
+      l_progress.value.forEach((v: any, indexV: any) => {
+        if (indexV === 0) {
+          v.active = true
+        } else {
+          v.active = false
+        }
       })
-      this.$emit('update', cleanOutput)
-      */
-    },
-    /**
-     * Shows content of a step.
-     * 
-     * @param {string} stepLabel same value defined in progress prop.
-     * @property {boolean} active returns true if stepLabel matches current step.
-     */
-    showStep(stepLabel: string) {
-      const findActive = this.l_progress.find((p: any) => p.label === stepLabel) as any
-      return findActive.active
-    },
+      highlightSteps()
+    })
 
-    highlightSteps() {
+    const highlightSteps = () => {
       /*
         Problem: Find the first true active value in progress array
         and set previous array highlight values to true
         this will avoid manually setting highlight property value
       */
-      const findActive = this.l_progress.findIndex((a: any) => a.active === true)
-      this.l_progress = this.l_progress.map((p: any, pIndex: any) => {
-        if (pIndex <= findActive) this.visited_lookup[pIndex] = true
+      const findActive = l_progress.value.findIndex((a: any) => a.active === true)
+      l_progress.value = l_progress.value.map((p: any, pIndex: any) => {
+        if (pIndex <= findActive) visited_lookup.value[pIndex] = true
         return {
           ...p,
           highlight: pIndex <= findActive ? true : false
@@ -150,9 +99,68 @@ export default {
        * 
        * @property {number} currentStep returns index of current step label.
        */
-      this.$emit('currentStep', this.currentStep)
-    },
-  },
+      context.emit('currentStep', currentStep.value)
+    }
+
+    /**
+     * Shows content of a step.
+     * 
+     * @param {string} stepLabel same value defined in progress prop.
+     * @property {boolean} active returns true if stepLabel matches current step.
+     */
+    const showStep = (stepLabel: string) => {
+      const findActive = l_progress.value.find((p: any) => p.label === stepLabel) as any
+      return findActive.active
+    }
+
+    /**
+     * Go to a step
+     * 
+     * @param {number} 1
+     * @public
+     */
+    const gotoStep = (newActiveStep: number) => {
+      l_progress.value[currentStep.value].active = false
+      l_progress.value[newActiveStep].active = true
+
+      highlightSteps()
+
+      /*
+      const cleanOutput = this.l_progress.map(v => {
+        return { label: v.label, active: v.active }
+      })
+      this.$emit('update', cleanOutput)
+      */
+    }
+
+    /**
+     * Go to previous step.
+     * 
+     * @public
+     */
+    const gotoPrev = () => {
+      gotoStep(currentStep.value - 1)
+    }
+
+    /**
+     * Go to next step.
+     * 
+     * @public
+     */
+    const gotoNext = () => {
+      gotoStep(currentStep.value + 1)
+    }
+
+    return {
+      l_progress,
+      visited_lookup,
+      currentStep,
+      showStep,
+      gotoStep,
+      gotoPrev,
+      gotoNext,
+    }
+  }
 }
 </script>
 
