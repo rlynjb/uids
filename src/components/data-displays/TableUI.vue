@@ -112,12 +112,13 @@ interface IColumn {
 
 /**
  * A lightweight Table UI component built with 2Dimensional Array and Hash Object.
+ * 
  * @displayName TableUI 
  */
 export default {
   props: {
     /**
-     * The column available settings for table.
+     * Available column settings.
      * @example
      * columns: [
      *  {
@@ -147,7 +148,7 @@ export default {
       },
     },
     /**
-     * The content from API response object that will match field in each column.
+     * Content from API response object that will match field in each column.
      */
     rows: {
       type: Array,
@@ -160,15 +161,15 @@ export default {
       },
     },
     /**
-     * The initial column that is sortable.
-     * @values column field property value
+     * Initial column that will be sortable.
+     * @values field name
      */
     sortField: {
       type: String,
       default: '',
     },
     /**
-     * The initial sorting order for column.
+     * Initial sorting order for column.
      * @values asc, desc
      */
     sortOrder: {
