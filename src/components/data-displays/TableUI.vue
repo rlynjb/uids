@@ -274,6 +274,8 @@ export default {
 </script>
 
 <style scope>
+@import '../../assets/tailwind.css';
+
 .table-widget table {
   width: 100%;
 }

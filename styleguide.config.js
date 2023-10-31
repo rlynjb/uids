@@ -10,7 +10,7 @@ module.exports = {
 			components: 'src/components/AppButton.vue'
 		},
 		{
-			name: 'Data Displays',
+			name: 'Components',
 			components: 'src/components/data-displays/[A-Z]*.vue'
 		}
 	],
