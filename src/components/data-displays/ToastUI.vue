@@ -37,7 +37,7 @@ export default {
     },
   },
 
-  setup(props) {
+  setup(props: any) {
     const l_config = ref({}) as any
 
     watch(
