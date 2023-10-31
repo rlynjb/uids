@@ -10,7 +10,9 @@
         v-if="rows.length"
         class="table-auto table-zebra table-normal shadow"
       >
-        <thead class="bg-black text-white text-left">
+        <thead
+          class="bg-secondary text-white text-left"
+        >
           <tr>
             <th
               v-for="(col, colIndex) in columns"
@@ -49,7 +51,7 @@
             >
               <span
                 v-if="row.settings_link[rowKey]"
-                class="row-link"
+                class="row-link text-primary"
                 @click="goto(row.settings_link[rowKey])"
               >
                 {{ rowVal }}
@@ -95,9 +97,9 @@
   </div>
 </template>
 
-<script>
-//import type { PropType } from 'vue';
-/*
+<script lang="ts">
+import type { PropType } from 'vue';
+
 interface IColumn {
   name: string;
   field: string;
@@ -106,10 +108,10 @@ interface IColumn {
   link?: string; // field name of row.data we want to be as link value
   button?: any[];
 }
-*/
+
 /**
- * Table UI component built with 2Dimensional Array
- * @displayName TableUI
+ * A lightweight Table UI component built with 2Dimensional Array and Hash Object.
+ * @displayName TableUI 
  */
 export default {
   props: {
@@ -133,7 +135,7 @@ export default {
      * ]
      */
     columns: {
-      type: Array,
+      type: Array as PropType<IColumn[]>,
       default: () => {
         return [
           {
@@ -176,9 +178,9 @@ export default {
 
   data() {
     return {
-      l_rows: [],
+      l_rows: [] as any[],
       reverse: false,
-      sortOrderTracker: {},
+      sortOrderTracker: {} as any,
     };
   },
 
@@ -197,7 +199,7 @@ export default {
   },
 
   methods: {
-    goto(val) {
+    goto(val: any) {
       /**
        * Triggers when the link field is clicked.
        * 
@@ -207,8 +209,8 @@ export default {
     },
 
     matchRowDataByColumnField() {
-      this.l_rows = this.rows.map((row) => {
-        const rowdata = {
+      this.l_rows = this.rows.map((row: any) => {
+        const rowdata: any = {
           display: {},
           raw: { ...row },
           settings_link: {}, // field_name/column: row_value (object || string)
@@ -216,7 +218,7 @@ export default {
           settings_align: {}, // field_name/column: row_value (object || string)
         };
 
-        this.columns.forEach((col) => {
+        this.columns.forEach((col: any) => {
           rowdata.display[col.field] = row[col.field];
 
           // if a link is set, add to settings field as key and
@@ -237,7 +239,7 @@ export default {
       });
     },
 
-    sortColumn(fieldName, sortOrder) {
+    sortColumn(fieldName: string, sortOrder: string) {
       this.sortOrderTracker = {}
 
       if (sortOrder === 'asc') {
@@ -255,7 +257,7 @@ export default {
       this.$emit('sortColumn', { fieldName, sortOrder });
     },
 
-    formatDate(dateString) {
+    formatDate(dateString: string) {
       const date = new Date(dateString);
       return new Intl.DateTimeFormat('default', { dateStyle: 'long' }).format(
         date,
@@ -266,8 +268,6 @@ export default {
 </script>
 
 <style scope>
-@import '../../assets/tailwind.css';
-
 .table-widget table {
   width: 100%;
 }
@@ -292,6 +292,7 @@ export default {
   cursor: pointer;
 }
 </style>
+
 
 <docs lang="md">
   ### How to use component.
