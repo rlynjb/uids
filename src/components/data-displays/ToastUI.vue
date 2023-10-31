@@ -37,18 +37,18 @@ export default {
     },
   },
 
-  setup({ config }) {
+  setup(props) {
     const l_config = ref({}) as any
 
     watch(
-      config,
+      () => props.config,
       (val: any) => {
         l_config.value = val
 
         if (val) {
           setTimeout(() => {
             l_config.value = {}
-          }, l_config.timeout)
+          }, l_config.value.timeout)
         }
       },
       {
