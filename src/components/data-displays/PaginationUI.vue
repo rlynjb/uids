@@ -43,9 +43,11 @@
 <script lang="ts">
 import { computed, ref, watch } from 'vue'
 
+/*
 import {
   IconButton
 } from '@/components'
+*/
 
 /**
  * A simple pagination that calculates total pages base on total items and items per page.
@@ -54,7 +56,7 @@ import {
 export default {
   name: "PaginationNavigation",
   components: {
-    IconButton,
+    //IconButton,
   },
   props: {
     itemsPerPage: {
@@ -71,7 +73,7 @@ export default {
     },
   },
 
-  setup(props) {
+  setup(props: any, context: any) {
     const l_itemsPerPage = ref(props.itemsPerPage)
     const l_totalItems = ref(props.totalItems)
     const l_currentPage = ref(props.currentPage)
@@ -89,17 +91,6 @@ export default {
       l_currentPage.value = val
     })
 
-    return {
-      l_itemsPerPage,
-      l_totalItems,
-      l_currentPage,
-      totalPages,
-      disablePrev,
-      disableNext,
-    }
-  },
-
-  methods: {
     /**
      * Triggers when itemsPerPage and currentPage values changed.
      * 
@@ -108,14 +99,24 @@ export default {
      * @property {object} payload returns an object.
      * @public
      */
-    update(key: string, val: number) {
+    const update = (key: string, val: number) => {
       const payload = {
-        itemsPerPage: key === 'itemsPerPage' ? Number(val) : Number(this.l_itemsPerPage),
-        totalItems: key === 'totalItems' ? val : this.l_totalItems,
-        currentPage: key === 'currentPage' ? val : this.l_currentPage
+        itemsPerPage: key === 'itemsPerPage' ? Number(val) : Number(l_itemsPerPage.value),
+        totalItems: key === 'totalItems' ? val : l_totalItems.value,
+        currentPage: key === 'currentPage' ? val : l_currentPage.value
       }
 
-      this.$emit('update', payload)
+      context.emit('update', payload)
+    }
+
+    return {
+      l_itemsPerPage,
+      l_totalItems,
+      l_currentPage,
+      totalPages,
+      disablePrev,
+      disableNext,
+      update,
     }
   }
 }

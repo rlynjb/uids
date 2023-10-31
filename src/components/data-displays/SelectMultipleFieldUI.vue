@@ -24,7 +24,7 @@
         </span>
         <span
           v-for="(v, vIndex) in selected as any[]"
-          :key="'v-'+vIndex"
+          :key="'v-' + vIndex"
           class="badge px-3 py-3 mr-1"
         >
           {{ v.label }}
@@ -63,7 +63,8 @@
 </template>
 
 <script lang="ts">
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 
 /**
  * A fancy select field that allows multiple values. Custom options layout. Detects selected value state.
@@ -107,91 +108,104 @@ export default {
     },
   },
 
-  data() {
-    return {
-      showOptions: false,
-      uid: uuidv4(),
-      l_selected: [] as any[],
-    }
-  },
+  setup(props: any, context: any) {
+    const showOptions = ref(false)
+    const uid = uuidv4()
+    const l_selected = ref<any[]>([])
 
-  watch: {
-    selected(val) {
-      this.l_selected = val
-    },
-  },
+    watch(
+      () => props.selected,
+      (val: any) => {
+        l_selected.value = val
+      },
+      {
+        deep: true
+      }
+    )
 
-  mounted() {
-    window.addEventListener('click', this.clickEvent)
-  },
+    onMounted(() => {
+      window.addEventListener('click', clickEvent)
+    })
+    onUnmounted(() => {
+      window.removeEventListener('click', clickEvent)
+    })
 
-  unmounted() {
-    window.removeEventListener('click', this.clickEvent)
-  },
-
-  methods: {
-    checkIfDisableOption(itemObj: any) {
-      const findObjInDisable = this.disableOptions.find((d: any) => itemObj.value === d.value)
-      return findObjInDisable ? true : false
-    },
-    clickEvent(event: any) {
-      if (this.disabled) return
+    const clickEvent = (event: any) => {
+      if (props.disabled) return
 
       const clickEvent = event.target as HTMLButtonElement
 
-      this.showOptions = (
-        clickEvent.className === 'sm-option-' + this.uid ||
-        clickEvent.className === 'sm-listOption-' + this.uid ||
-        clickEvent.className === 'sm-placeholder-' + this.uid ||
-        clickEvent.id === 'selectMultipleInputField' + this.uid
+      showOptions.value = (
+        clickEvent.className === 'sm-option-' + uid ||
+        clickEvent.className === 'sm-listOption-' + uid ||
+        clickEvent.className === 'sm-placeholder-' + uid ||
+        clickEvent.id === 'selectMultipleInputField' + uid
       )
         ? true
         : false
-    },
-    add(itemObj: any) {
+    }
+
+    const checkIfDisableOption = (itemObj: any) => {
+      const findObjInDisable = props.disableOptions.find((d: any) => itemObj.value === d.value)
+      return findObjInDisable ? true : false
+    }
+
+    const add = (itemObj: any) => {
       // if there is disable items, check if option should be disabled and return click
-      if (this.disableOptions.length) {
-        if (this.checkIfDisableOption(itemObj)) return
+      if (props.disableOptions.length) {
+        if (checkIfDisableOption(itemObj)) return
       }
 
       // update and emit latest selected items
-      const dupIndex = this.l_selected.findIndex((s: any) => s.value === itemObj.value)
+      const dupIndex = l_selected.value.findIndex((s: any) => s.value === itemObj.value)
       if (dupIndex != -1) { // remove from list
-        this.l_selected.splice(dupIndex, 1)
-        this.$emit('update', this.l_selected)
-        this.$emit('input', this.l_selected)
+        l_selected.value.splice(dupIndex, 1)
+        context.emit('update', l_selected.value)
+        context.emit('input', l_selected.value)
         return
       }
-      this.l_selected.push(itemObj)
-      this.$emit('update', this.l_selected)
-      this.$emit('input', this.l_selected)
+      l_selected.value.push(itemObj)
+      context.emit('update', l_selected.value)
+      context.emit('input', l_selected.value)
 
       // also emit individual object
-      this.$emit('add', itemObj)
-    },
-    remove(itemObj: any) {
-      if (this.disabled) return
+      context.emit('add', itemObj)
+    }
+
+    const remove = (itemObj: any) => {
+      if (props.disabled) return
 
       // update and emit latest selected items
-      const findIndex = this.l_selected.findIndex((s: any) => s.value === itemObj.value)
-      this.l_selected.splice(findIndex, 1)
-      this.$emit('update', this.l_selected)
-      this.$emit('input', this.l_selected)
+      const findIndex = l_selected.value.findIndex((s: any) => s.value === itemObj.value)
+      l_selected.value.splice(findIndex, 1)
+      context.emit('update', l_selected.value)
+      context.emit('input', l_selected.value)
 
       // also emit individual object
-      const findObj = this.options.find((o: any) => o.value === itemObj.value)
-      this.$emit('remove', findObj)
-    },
+      const findObj = props.options.find((o: any) => o.value === itemObj.value)
+      context.emit('remove', findObj)
+    }
+
     /*
       NOTE:
       This last implementation caused the Options pane to hidden
       when user selects an unselected option
     */
-    findActive(obj: any) {
-      const findActive = this.selected.find((a: any) => a.value === obj.value)
+    const findActive = (obj: any) => {
+      const findActive = props.selected.find((a: any) => a.value === obj.value)
       return findActive ? true : false
-    },
-  },
+    }
+
+    return {
+      showOptions,
+      uid,
+      l_selected,
+      findActive,
+      checkIfDisableOption,
+      add,
+      remove,
+    }
+  }
 };
 </script>
 

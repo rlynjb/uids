@@ -30,7 +30,9 @@
 
 <script lang="ts">
 // ui
-import IconButton from "@/components/ui/actions/IconButton.vue"
+//import IconButton from "@/components/ui/actions/IconButton.vue"
+
+import { ref, watch } from 'vue'
 
 /**
  * A simple modal ui
@@ -39,7 +41,7 @@ import IconButton from "@/components/ui/actions/IconButton.vue"
 export default {
   name: "ModalUI",
   components: {
-    IconButton
+    //IconButton
   },
   props: {
     show: {
@@ -48,28 +50,30 @@ export default {
     },
   },
 
-  data() {
-    return {
-      showModal: false,
-    }
-  },
+  setup(props: any, context: any) {
+    const showModal = ref(false)
 
-  watch: {
-    show() {
-      this.showModal = true
-      this.$emit('modalStatus', this.showModal)
-    },
-  },
+    watch(
+      () => props.show,
+      () => {
+        showModal.value = true
+        context.emit('modalStatus', showModal.value)
+      }
+    )
 
-  methods: {
     /**
      * Triggers to close modal.
      */
-    closeModal() {
-      this.showModal = false
-      this.$emit('modalStatus', this.showModal)
-    },
-  },
+    const closeModal = () => {
+      showModal.value = false
+      context.emit('modalStatus', showModal.value)
+    }
+
+    return {
+      showModal,
+      closeModal,
+    }
+  }
 }
 </script>
 

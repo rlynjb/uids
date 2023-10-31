@@ -8,6 +8,7 @@
 </template>
 
 <script lang="ts">
+import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 /**
@@ -20,30 +21,25 @@ export default {
   setup() {
     const router = useRouter()
     const route = useRoute()
+    const currentPage = ref('')
+
+    onMounted(() => {
+      currentPage.value = (route.name as string).replace('_', ' ')
+    })
+
+    const goto = (val: string) => {
+      router.push({
+        path: val
+      })
+    }
 
     return {
       router,
       route,
+      currentPage,
+      goto,
     }
-  },
-
-  data() {
-    return {
-      currentPage: '' as string
-    }
-  },
-
-  mounted() {
-    this.currentPage = (this.route.name as string).replace('_', ' ')
-  },
-
-  methods: {
-    goto(val: string) {
-      this.router.push({
-        path: val
-      })
-    },
-  },
+  }
 }
 </script>
 

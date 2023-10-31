@@ -4,7 +4,7 @@
       class="label cursor-pointer"
     >
       <input
-        ref="inputCheckbox"
+        ref="tref_inputCheckbox"
         v-model="l_checked"
         type="checkbox"
         class="checkbox rounded-none"
@@ -19,6 +19,7 @@
 </template>
 
 <script lang="ts">
+import { ref, onMounted } from 'vue'
 /**
  * A simple checkbox field that returns check status and additional object value of checked item.
  * 
@@ -41,21 +42,25 @@ export default {
     },
   },
 
-  data() {
+  setup(props: any, context: any) {
+    const l_checked = ref(false)
+    //const tref_inputCheckbox = ref<InstanceType<typeof HTMLFormElement>>()
+    const tref_inputCheckbox = ref() as any
+
+    onMounted(() => {
+      l_checked.value = props.checked
+    })
+
+    const update = () => {
+      context.emit('update', { label: props.label, checked: (tref_inputCheckbox as HTMLFormElement).checked } )
+    }
+
     return {
-      l_checked: false
+      l_checked,
+      tref_inputCheckbox,
+      update,
     }
-  },
-
-  mounted() {
-    this.l_checked = this.checked
-  },
-
-  methods: {
-    update() {
-      this.$emit('update', { label: this.label, checked: (this.$refs.inputCheckbox as HTMLFormElement).checked } )
-    }
-  },
+  }
 }
 </script>
 
