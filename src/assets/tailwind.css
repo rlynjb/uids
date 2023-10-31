@@ -17,7 +17,7 @@
 
   /* TYPOGRAPHY */
   html {font-size: 100%;} /*16px*/
-
+/*
   @font-face {
     font-family: 'CenturyGothic';
     src: local('Century Gothic'), local('CenturyGothic'),
@@ -35,7 +35,7 @@
     font-weight: 700;
     font-style: normal;
   }
-
+*/
   p {margin-bottom: 1rem;}
 
   h1, h2, h3, h4, h5, h6 {
