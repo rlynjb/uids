@@ -99,6 +99,7 @@
 
 <script lang="ts">
 import type { PropType } from 'vue';
+import { onMounted, ref, watch } from 'vue'
 
 interface IColumn {
   name: string;
@@ -176,40 +177,37 @@ export default {
     },
   },
 
-  data() {
-    return {
-      l_rows: [] as any[],
-      reverse: false,
-      sortOrderTracker: {} as any,
-    };
-  },
+  setup(props: any, context: any) {
+    const l_rows = ref<any[]>([])
+    const reverse = ref(false)
+    const sortOrderTracker = ref({}) as any
 
-  watch: {
-    rows() {
-      this.matchRowDataByColumnField();
-    },
-  },
+    watch(
+      () => props.rows,
+      () => {
+        matchRowDataByColumnField()
+      }
+    )
 
-  mounted() {
-    this.matchRowDataByColumnField();
+    onMounted(() => {
+      matchRowDataByColumnField()
 
-    this.sortOrderTracker = {
-      [this.sortField]: this.sortOrder
-    }
-  },
+      sortOrderTracker.value = {
+        [props.sortField]: props.sortOrder
+      }
+    })
 
-  methods: {
-    goto(val: any) {
+    const goto = (val: any) => {
       /**
        * Triggers when the link field is clicked.
        * 
        * @property {object} val returns a raw/complete data object of row item.
        */
-      this.$emit('goto', val);
-    },
+       context.emit('goto', val)
+    }
 
-    matchRowDataByColumnField() {
-      this.l_rows = this.rows.map((row: any) => {
+    const matchRowDataByColumnField = () => {
+      l_rows.value = props.rows.map((row: any) => {
         const rowdata: any = {
           display: {},
           raw: { ...row },
@@ -218,13 +216,13 @@ export default {
           settings_align: {}, // field_name/column: row_value (object || string)
         };
 
-        this.columns.forEach((col: any) => {
-          rowdata.display[col.field] = row[col.field];
+        props.columns.forEach((col: any) => {
+          rowdata.display[col.field] = row[col.field]
 
           // if a link is set, add to settings field as key and
           // which property value it will be set as a link
           if (col.link) {
-            rowdata.settings_link[col.field] = row[col.link];
+            rowdata.settings_link[col.field] = row[col.link]
           }
 
           if (col.button) {
@@ -234,18 +232,18 @@ export default {
           if (col.align) {
             rowdata.settings_align[col.field] = col.align
           }
-        });
-        return rowdata;
-      });
-    },
+        })
+        return rowdata
+      })
+    }
 
-    sortColumn(fieldName: string, sortOrder: string) {
-      this.sortOrderTracker = {}
+    const sortColumn = (fieldName: string, sortOrder: string) => {
+      sortOrderTracker.value = {}
 
       if (sortOrder === 'asc') {
-        this.sortOrderTracker[fieldName] = 'desc'
+        sortOrderTracker[fieldName] = 'desc'
       } else {
-        this.sortOrderTracker[fieldName] = 'asc'
+        sortOrderTracker[fieldName] = 'asc'
       }
 
       /**
@@ -254,17 +252,25 @@ export default {
        * @property {string} fieldName returns name of field.
        * @property {string} sortOrder returns order of sort.
        */
-      this.$emit('sortColumn', { fieldName, sortOrder });
-    },
+      context.emit('sortColumn', { fieldName, sortOrder });
+    }
 
-    formatDate(dateString: string) {
+    const formatDate = (dateString: string) => {
       const date = new Date(dateString);
-      return new Intl.DateTimeFormat('default', { dateStyle: 'long' }).format(
-        date,
-      );
-    },
-  },
-};
+      return new Intl.DateTimeFormat('default', { dateStyle: 'long' }).format(date)
+    }
+
+
+    return {
+      l_rows,
+      reverse,
+      sortOrderTracker,
+      goto,
+      sortColumn,
+      formatDate,
+    }
+  }
+}
 </script>
 
 <style scope>

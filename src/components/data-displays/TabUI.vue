@@ -41,7 +41,7 @@ export default {
     },
   },
 
-  setup(props) {
+  setup(props: any) {
     const currentTab = ref(props.defaultTab)
 
     /**
