@@ -32,6 +32,10 @@
 // ui
 import IconButton from "@/components/ui/actions/IconButton.vue"
 
+/**
+ * A simple modal ui
+ * @displayName ModalUI
+ */
 export default {
   name: "Modal",
   components: {
@@ -58,6 +62,9 @@ export default {
   },
 
   methods: {
+    /**
+     * Triggers to close modal.
+     */
     closeModal() {
       this.showModal = false
       this.$emit('modalStatus', this.showModal)
