@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 /**
  * A simple toast using JavaScripts' setTimeout.
@@ -19,7 +19,7 @@ import { ref } from 'vue'
  * @displayName ToastUI
  */
 export default {
-  name: "Toast",
+  name: "ToastUI",
   props: {
     /**
      * Settings for time, message, and color of toast.
@@ -37,26 +37,27 @@ export default {
     },
   },
 
-  setup() {
+  setup({ config }) {
     const l_config = ref({}) as any
+
+    watch(
+      config,
+      (val: any) => {
+        l_config.value = val
+
+        if (val) {
+          setTimeout(() => {
+            l_config.value = {}
+          }, l_config.timeout)
+        }
+      },
+      {
+        deep: true
+      }
+    )
 
     return {
       l_config,
-    }
-  },
-
-  watch: {
-    config: {
-      handler(val) {
-        this.l_config = val
-  
-        if (val) {
-          setTimeout(() => {
-            this.l_config = {}
-          }, this.l_config.timeout)
-        }
-      },
-      deep: true,
     }
   },
 }

@@ -16,7 +16,7 @@ import { useRouter, useRoute } from 'vue-router'
  * @displayName BreadcrumbUI
  */
 export default {
-  name: "Breadcrumb",
+  name: "BreadcrumbUI",
   setup() {
     const router = useRouter()
     const route = useRoute()

@@ -37,7 +37,7 @@ import IconButton from "@/components/ui/actions/IconButton.vue"
  * @displayName ModalUI
  */
 export default {
-  name: "Modal",
+  name: "ModalUI",
   components: {
     IconButton
   },

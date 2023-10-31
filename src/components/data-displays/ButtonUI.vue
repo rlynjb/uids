@@ -8,7 +8,7 @@
 
 <script lang="ts">
 export default {
-  name: "Button",
+  name: "ButtonUI",
   props: {
     label: {
       type: String,

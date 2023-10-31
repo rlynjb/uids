@@ -45,7 +45,7 @@
  * @displayName StepsUI
  */
 export default {
-  name: "Steps",
+  name: "StepsUI",
   props: {
     /**
      * A list of step label.
@@ -137,7 +137,7 @@ export default {
         this will avoid manually setting highlight property value
       */
       const findActive = this.l_progress.findIndex((a: any) => a.active === true)
-      this.l_progress = this.l_progress.map((p: any, pIndex) => {
+      this.l_progress = this.l_progress.map((p: any, pIndex: any) => {
         if (pIndex <= findActive) this.visited_lookup[pIndex] = true
         return {
           ...p,

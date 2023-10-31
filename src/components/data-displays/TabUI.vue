@@ -21,7 +21,7 @@ import { ref } from 'vue'
  * @displayName TabUI
  */
 export default {
-  name: "Tab",
+  name: "TabUI",
   props: {
     /**
      * A list of tab labels.
