@@ -241,9 +241,9 @@ export default {
       sortOrderTracker.value = {}
 
       if (sortOrder === 'asc') {
-        sortOrderTracker[fieldName] = 'desc'
+        sortOrderTracker.value[fieldName] = 'desc'
       } else {
-        sortOrderTracker[fieldName] = 'asc'
+        sortOrderTracker.value[fieldName] = 'asc'
       }
 
       /**
