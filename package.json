@@ -7,7 +7,9 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "styleguide": "vue-cli-service styleguidist",
-    "styleguide:build": "vue-cli-service styleguidist:build"
+    "styleguide:build": "vue-cli-service styleguidist:build",
+    "cleanbuild": "rm -rf index.html && rm -rf build && rm -rf styleguide",
+    "movebuild": "mv styleguide/* ../uids/"
   },
   "dependencies": {
     "autoprefixer": "^10",
