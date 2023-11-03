@@ -1,8 +1,31 @@
 <template>
   <div class="text-sm breadcrumbs">
-    <ul>
-      <li><a @click="goto('/')">Home</a></li> 
-      <li>{{ currentPage }}</li>
+    <ul
+      v-if="parentPaths.length"
+    >
+      <li>
+        <a @click="goto('/')">Home</a>
+      </li> 
+      <li
+        v-for="(bc, bcIndex) in parentPaths"
+        :key="'bc-'+bcIndex"
+      >
+        <a @click="goto(bc.path)">{{ bc.name }}</a>
+      </li>
+      <li>
+        {{ currentPage }}
+      </li>
+    </ul>
+
+    <ul
+      v-else
+    >
+      <li>
+        <a @click="goto('/')">Home</a>
+      </li>
+      <li>
+        {{ currentPage }}
+      </li>
     </ul>
   </div>
 </template>
@@ -12,12 +35,19 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 /**
- * A really simple breadcrumb. 1-level nested breadcrumb using Vue-router
+ * A breadcrumb using vue-router with default path of
+ * Home and Current page.
  * 
  * @displayName BreadcrumbUI
  */
 export default {
-  name: "BreadcrumbUI",
+  name: "Breadcrumb",
+  props: {
+    parentPaths: {
+      type: Array,
+      default: () => []
+    },
+  },
   setup() {
     const router = useRouter()
     const route = useRoute()
@@ -26,6 +56,7 @@ export default {
     onMounted(() => {
       currentPage.value = (route.name as string).replace('_', ' ')
     })
+
 
     const goto = (val: string) => {
       router.push({
