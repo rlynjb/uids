@@ -77,3 +77,29 @@ export default {
 <style>
 
 </style>
+
+
+<docs lang="md">
+##### Basic usage
+```js
+//import { ref } from "vue"
+
+<Tab
+  ref="tab_tref"
+  :tabs="['Tab1', 'Tab2', 'Tab3']"
+  default-tab="Tab1"
+/>
+<div v-show="tab_tref?.showTab('Tab1')">
+  Tab1
+</div>
+<div v-show="tab_tref?.showTab('Tab2')">
+  Tab2
+</div>
+<div v-show="tab_tref?.showTab('Tab3')">
+  Tab3
+</div>
+
+// Vue3 composition api template ref implementation:
+// const tab_ref = ref<InstanceType<typeof Tab>>()
+```
+</docs>

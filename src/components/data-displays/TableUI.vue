@@ -304,20 +304,101 @@ export default {
 
 
 <docs lang="md">
-  ### How to use component.
-
-  How to set basic column settings. name and field properties.
-  
+  ##### Set basic column settings
   ```js
-  <TableUI />
+  const columns = [
+    {
+      name: "Title",
+      field: "title"
+    },
+    {
+      name: "Date",
+      field: "date"
+    }
+  ]
+  const data = [
+    {
+      title: "sample title text",
+      date: "00/00/00"
+    }
+  ]
+
+  <TableUI
+    :columns="columns"
+    :rows="data"
+  />
   ```
 
-  How to make a data record a link.
-  How to add a button.
-  How to text align a data record.
-  How to make a column sortable.
-
+  ##### Make a data record a link
   ```js
-  <TableUI />
+  const columns = [
+    {
+      name: "Title",
+      field: "title",
+      link: "id"
+    },
+    {
+      name: "Date",
+      field: "date"
+    }
+  ]
+  const data = [
+    {
+      id: "asd123",
+      title: "clickable title text",
+      date: "00/00/00"
+    }
+  ]
+  /**
+   *  @returns {string} id - The id of data pass to component
+   */
+  const gotoLink = (id) => {
+    // do stuff here
+  }
+
+  <TableUI
+    :columns="columns"
+    :rows="data"
+    @goto="gotoLink"
+  />
   ```
+
+  ##### Add buttons
+
+
+  ##### Text align a data record
+  ```js
+  const columns = [
+    {
+      name: "Title",
+      field: "title"
+    },
+    {
+      name: "Date",
+      field: "date"
+    },
+    {
+      name: "Complete",
+      field: "complete",
+      align: "text-center"
+    }
+  ]
+  const data = [
+    {
+      title: "sample title text",
+      date: "00/00/00",
+      complete: "90%"
+    }
+  ]
+
+  <TableUI
+    :columns="columns"
+    :rows="data"
+  />
+  ```
+
+
+  ##### Make a column sortable.
+
+
 </docs>

@@ -12,7 +12,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 /**
- * A really simple breadcrumb. basic format and 1-level nested breadcrumb. :D
+ * A really simple breadcrumb. 1-level nested breadcrumb using Vue-router
  * 
  * @displayName BreadcrumbUI
  */

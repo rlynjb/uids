@@ -12,6 +12,7 @@
     "movebuild": "mv styleguide/* ../uids/"
   },
   "dependencies": {
+    "@vue/compiler-sfc": "^3.3.7",
     "autoprefixer": "^10",
     "core-js": "^3.8.3",
     "postcss": "^8",
