@@ -79,3 +79,31 @@ export default {
   text-transform: capitalize;
 }
 </style>
+
+
+
+<doc lang="md">
+##### Basic usage
+```js
+<Breadcrumb />
+```
+
+##### Set Parent Page
+```js
+/*
+  NOTE:
+  id can be retrieved in store, vue-router, localStorage, whichever you prefer to store routes.
+*/
+const id = 123123
+const paths = [
+  {
+    name: 'Parent Page',
+    path: '/parent-path/{id}/subpage'
+  }
+]
+
+<Breadcrumb
+  :parent-paths="paths"
+/>
+```
+</doc>
