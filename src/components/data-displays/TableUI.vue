@@ -11,7 +11,7 @@
         class="table-auto table-zebra table-normal shadow"
       >
         <thead
-          class="bg-black text-white text-left"
+          class="bg-secondary text-white text-left"
         >
           <tr>
             <th
@@ -112,13 +112,16 @@ interface IColumn {
 
 /**
  * A lightweight Table UI component built with 2Dimensional Array and Hash Object.
+ * TODO:
+ * - format column data
+ * - visible columns
  * 
  * @displayName TableUI 
  */
 export default {
   props: {
     /**
-     * Available column settings.
+     * The column available settings for table.
      * @example
      * columns: [
      *  {
@@ -148,7 +151,7 @@ export default {
       },
     },
     /**
-     * Content from API response object that will match field in each column.
+     * The content from API response object that will match field in each column.
      */
     rows: {
       type: Array,
@@ -161,15 +164,15 @@ export default {
       },
     },
     /**
-     * Initial column that will be sortable.
-     * @values field name
+     * The initial column that is sortable.
+     * @values column field property value
      */
     sortField: {
       type: String,
       default: '',
     },
     /**
-     * Initial sorting order for column.
+     * The initial sorting order for column.
      * @values asc, desc
      */
     sortOrder: {
@@ -275,8 +278,6 @@ export default {
 </script>
 
 <style scope>
-@import '../../assets/tailwind.css';
-
 .table-widget table {
   width: 100%;
 }
@@ -301,6 +302,8 @@ export default {
   cursor: pointer;
 }
 </style>
+
+
 
 
 <docs lang="md">
