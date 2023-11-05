@@ -24,6 +24,7 @@ npm run movebuild
 ```
 
 ## TODOs
+- follow docs to document Events in vue3
 - load icons
 - set general theme
 - on sample code, how to use vue.js
