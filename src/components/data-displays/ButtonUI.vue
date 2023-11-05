@@ -26,7 +26,9 @@ export default {
 };
 </script>
 
-<style lang="postcss">
+<style>
+@import "../../assets/tailwind.css";
+
 .btn.btn-link,
 .btn.btn-link:hover {
   text-decoration-line: none;
@@ -35,3 +37,17 @@ export default {
   margin: 0 -5px;
 }
 </style>
+
+
+<docs lang="md">
+  ##### Basic usage
+  ```js
+    <ButtonUI
+      label="label name"
+    />
+  ```
+
+  ##### Set Icon before label
+
+  ##### Set Icon after label
+</docs>

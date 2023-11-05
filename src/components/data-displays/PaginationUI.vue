@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination">
+  <div class="pagination text-right">
     <span>Items per page:</span>
     <span>
       <select
@@ -54,7 +54,7 @@ import {
  * @displayName PaginationUI
  */
 export default {
-  name: "PaginationNavigation",
+  name: "Pagination",
   components: {
     //IconButton,
   },
@@ -122,15 +122,28 @@ export default {
 }
 </script>
 
-<style scope lang="postcss">
+<style scope>
+@import "../../assets/tailwind.css";
+
 .pagination {
-  @apply text-right;
   font-size: 12px;
 }
 .pagination span {
-  @apply inline-block ml-2;
+  display: inline-block;
+  margin-left: 10px;
 }
 .pagination select {
-  @apply border-0;
+  border-radius: 0;
 }
 </style>
+
+
+<docs lang="md">
+  ##### Basic usage
+  ```js
+  const params_pagination = {
+
+  }
+  <Pagination />
+  ```
+</docs>

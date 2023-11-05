@@ -69,7 +69,7 @@ import { ref, watch, onMounted, onUnmounted } from 'vue'
 /**
  * A fancy select field that allows multiple values. Custom options layout. Detects selected value state.
  * 
- * @displayName SelectMultipleFieldUI
+ * @displayName SelectMultipleField
  */
 export default {
   name: "SelectMultipleField",
@@ -209,7 +209,9 @@ export default {
 };
 </script>
 
-<style scope lang="postcss">
+<style scope>
+@import "../../assets/tailwind.css";
+
 .s-field-container .s-field-label {
   padding-left: 0;
 }
@@ -264,3 +266,21 @@ export default {
   z-index: 9;
 }
 </style>
+
+
+
+<docs lang="md">
+  ##### Basic usage
+  ```js
+  const options = [
+    { label: "option1", value: "option1" }
+  ]
+  const selected = []
+
+  <SelectMultipleField
+    label="Sample field"
+    :options="options"
+    :selected="selected"
+  />
+  ```
+</docs>

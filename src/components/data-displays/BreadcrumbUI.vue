@@ -54,7 +54,9 @@ export default {
     const currentPage = ref('')
 
     onMounted(() => {
-      currentPage.value = (route.name as string).replace('_', ' ')
+      currentPage.value = route && route.name
+        ? (route.name as string).replace('_', ' ')
+        : 'sample current page name'
     })
 
 
@@ -74,8 +76,9 @@ export default {
 }
 </script>
 
-<style>
+<style scope>
 @import "../../assets/tailwind.css";
+
 .breadcrumbs li {
   text-transform: capitalize;
 }

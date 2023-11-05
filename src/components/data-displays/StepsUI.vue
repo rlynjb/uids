@@ -164,7 +164,9 @@ export default {
 }
 </script>
 
-<style>
+<style scope>
+@import "../../assets/tailwind.css";
+
 .steps .step-primary span {
   cursor: pointer;
 }
@@ -180,3 +182,37 @@ export default {
   cursor: pointer;
 }
 </style>
+
+
+<docs lang="md">
+  ##### Basic usage
+  ```js
+  // vue3 implementation
+  // import { ref } from "vue"
+  const steps_tref = ref<InstanceType<typeof Steps>>()
+  const progress = [
+    { label: "Step1" },
+    { label: "Step2" },
+    { label: "Step3" }
+  ]
+  <StepsUI
+    ref="steps_tref"
+    :progress="progress"
+  />
+
+  <div v-show="steps_tref?.showStep('Step1')">
+    content for step1
+  </div>
+  <div v-show="steps_tref?.showStep('Step2')">
+    content for step2
+  </div>
+  <div v-show="steps_tref?.showStep('Step3')">
+    content for step3
+  </div>
+  ```
+
+  ##### Show current step
+  ```js
+  
+  ```
+</docs>

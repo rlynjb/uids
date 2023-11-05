@@ -60,7 +60,9 @@ export default {
 };
 </script>
 
-<style scope lang="postcss">
+<style scope>
+@import "../../assets/tailwind.css";
+
 .s-field-container .s-field-label {
   padding-left: 0;
 }
@@ -71,3 +73,10 @@ export default {
   outline: none;
 }
 </style>
+
+
+<docs lang="md">
+  ##### Basic usage
+  ```js
+  ```
+</docs>

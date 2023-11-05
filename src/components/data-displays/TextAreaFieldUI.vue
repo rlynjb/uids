@@ -53,7 +53,9 @@ export default {
 }
 </script>
 
-<style lang="postcss">
+<style scope>
+@import "../../assets/tailwind.css";
+
 .s-field-container .s-field-label {
   padding-left: 0;
 }
@@ -64,3 +66,31 @@ textarea.textarea:focus {
   outline: none;
 }
 </style>
+
+
+<docs lang="md">
+  ##### Basic usage
+  ```js
+  <TextAreaFieldUI
+    label="sample label"
+    placeholder="type here"
+  />
+  ```
+
+  ##### Disable textarea
+  ```js
+  <TextAreaFieldUI
+    label="sample label"
+    placeholder="type here"
+    :disabled="true"
+  />
+  ```
+  ##### Set error message
+  ```js
+  <TextAreaFieldUI
+    label="sample label"
+    placeholder="type here"
+    :error-status="true"
+  />
+  ```
+</docs>

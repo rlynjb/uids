@@ -65,6 +65,8 @@ export default {
 </script>
 
 <style>
+@import "../../assets/tailwind.css";
+
 .checkbox-field label {
   width: fit-content;
 }
@@ -74,3 +76,29 @@ export default {
   height: 1em;
 }
 </style>
+
+
+<docs lang="md">
+  ##### Basic usage
+  ```js
+  <CheckboxFieldUI
+    label="Option1"
+  />
+  ```
+
+  ##### Disable checkbox
+  ```js
+  <CheckboxFieldUI
+    label="Option1"
+    :disabled="true"
+  />
+  ```
+
+  ##### Set default value
+  ```js
+  <CheckboxFieldUI
+    label="Option1"
+    :checked="true"
+  />
+  ```
+</docs>

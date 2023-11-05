@@ -63,6 +63,13 @@ export default {
 }
 </script>
 
-<style scoped lang="postcss">
+<style scoped>
 
 </style>
+
+
+<docs lang="md">
+  ##### Basic usage
+  ```js
+  ```
+</docs>

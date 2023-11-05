@@ -12,11 +12,12 @@
           <span class="icon pg-close" />
         </button>
 
-        <IconButton
+        <button
           class="btn btn-ghost modal-close"
-          icon-name="pg-close"
           @click="closeModal"
-        />
+        >
+          x
+        </button>
 
         <slot />
       </div>
@@ -77,7 +78,9 @@ export default {
 }
 </script>
 
-<style lang="postcss" scope>
+<style scope>
+@import "../../assets/tailwind.css";
+
 .modal-widget .modal {
   visibility: visible;
   opacity: 1;
@@ -95,3 +98,46 @@ export default {
   line-height: 1;
 }
 </style>
+
+
+<docs lang="md">
+  ##### Basic usage
+  ```js
+  const showModal = false
+  const onShowModal = () => {
+    showModal = showModal ? false : true
+  }
+
+  <button
+    @click="onShowModal"
+  >
+    show modal
+  </button>
+
+  <Modal
+    :show="showModal"
+  >
+    Test content
+  </Modal>
+  ```
+
+  ##### Trigger close modal method
+  ```js
+  // vue3 implementation
+  //import { ref } "vue"
+  const modal_tref = ref<InstanceType<typeof Modal>>()
+
+  <button
+    @click="() => modal_tref?.closeModal()"
+  >
+    close modal
+  </button>
+
+  <Modal
+    ref="modal_tref"
+    :show="showModal"
+  >
+    Test content
+  </Modal>
+  ```
+</docs>

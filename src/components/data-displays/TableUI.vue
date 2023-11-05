@@ -11,7 +11,7 @@
         class="table-auto table-zebra table-normal shadow"
       >
         <thead
-          class="bg-secondary text-white text-left"
+          class="bg-black text-white text-left"
         >
           <tr>
             <th
