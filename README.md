@@ -16,6 +16,8 @@ follow vue styleguidist instruction here: https://vue-styleguidist.github.io/doc
 4. install and configure daisyui
 - https://daisyui.com/docs/install/
 
+5. use https://heroicons.com/ for svg/jsx icons
+
 ## deploy to github pages
 ```
 npm run cleanbuild
@@ -25,7 +27,7 @@ npm run movebuild
 
 ## TODOs
 - follow docs to document Events in vue3
-- load icons
+- ~~load icons (provided svg icon option)~~
 - set general theme
 - on sample code, how to use vue.js
 - on paginationUI, make component flush on right
