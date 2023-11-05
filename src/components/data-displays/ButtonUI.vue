@@ -26,7 +26,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import "../../assets/tailwind.css";
 
 .btn.btn-link,

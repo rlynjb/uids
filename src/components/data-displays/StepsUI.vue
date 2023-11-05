@@ -189,7 +189,7 @@ export default {
   ```js
   // vue3 implementation
   // import { ref } from "vue"
-  const steps_tref = ref<InstanceType<typeof Steps>>()
+  //const steps_tref = ref<InstanceType<typeof Steps>>()
   const progress = [
     { label: "Step1" },
     { label: "Step2" },
@@ -200,13 +200,13 @@ export default {
     :progress="progress"
   />
 
-  <div v-show="steps_tref?.showStep('Step1')">
+  <div>
     content for step1
   </div>
-  <div v-show="steps_tref?.showStep('Step2')">
+  <div>
     content for step2
   </div>
-  <div v-show="steps_tref?.showStep('Step3')">
+  <div>
     content for step3
   </div>
   ```

@@ -103,16 +103,10 @@ export default {
 <docs lang="md">
   ##### Basic usage
   ```js
+  // vue3 implementation
+  // import { ref } from "vue"
+  // const modal_tref = ref<InstanceType<typeof Modal>>()
   const showModal = false
-  const onShowModal = () => {
-    //showModal = showModal ? false : true
-  }
-
-  <button
-    @click="onShowModal"
-  >
-    show modal
-  </button>
 
   <Modal
     :show="showModal"
@@ -124,14 +118,9 @@ export default {
   ##### Trigger close modal method
   ```js
   // vue3 implementation
-  //import { ref } "vue"
-  const modal_tref = ref<InstanceType<typeof Modal>>()
-
-  <button
-    @click="() => modal_tref?.closeModal()"
-  >
-    close modal
-  </button>
+  // import { ref } from "vue"
+  // const modal_tref = ref<InstanceType<typeof Modal>>()
+  const showModal = false
 
   <Modal
     ref="modal_tref"
