@@ -41,7 +41,7 @@ import { useRouter, useRoute } from 'vue-router'
  * @displayName BreadcrumbUI
  */
 export default {
-  name: "Breadcrumb",
+  name: "BreadcrumbUI",
   props: {
     parentPaths: {
       type: Array,
