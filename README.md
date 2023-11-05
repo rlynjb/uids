@@ -1,4 +1,7 @@
 # uids
+https://rlynjb.github.io/uids/
+
+## How to configure
 
 1. install vue using vue-cli
 follow vue styleguidist instruction here: https://vue-styleguidist.github.io/docs/GettingStarted.html#_1-install
@@ -13,7 +16,12 @@ follow vue styleguidist instruction here: https://vue-styleguidist.github.io/doc
 4. install and configure daisyui
 - https://daisyui.com/docs/install/
 
-Built with vue3 and vue styleguist
+## deploy to github pages
+```
+npm run cleanbuild
+npm run styleguide:build
+npm run movebuild
+```
 
 
 ## Project setup
