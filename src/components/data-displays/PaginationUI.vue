@@ -54,7 +54,7 @@ import {
  * @displayName PaginationUI
  */
 export default {
-  name: "Pagination",
+  name: "PaginationUI",
   components: {
     //IconButton,
   },
@@ -144,6 +144,6 @@ export default {
   const params_pagination = {
 
   }
-  <Pagination />
+  <PaginationUI />
   ```
 </docs>

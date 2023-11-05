@@ -105,7 +105,7 @@ export default {
   ```js
   const showModal = false
   const onShowModal = () => {
-    showModal = showModal ? false : true
+    //showModal = showModal ? false : true
   }
 
   <button
