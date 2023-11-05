@@ -23,6 +23,24 @@ npm run styleguide:build
 npm run movebuild
 ```
 
+## TODOs
+- load icons
+- set general theme
+- on sample code, how to use vue.js
+- on paginationUI, make component flush on right
+- on select multiple field, make it work
+- stepsui, how to use vue.js on code sample
+- on tabsui, how t use vue.js on code sample
+- textfieldui, implement usages
+- toastui, implement usages
+
+## Backlog
+- redesign/relayout UI stylguidist
+- component props section, show by default
+- component view code, show by default
+- set official UI styleguide name
+- display components on each own page
+
 
 ## Project setup
 ```
