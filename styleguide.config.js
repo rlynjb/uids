@@ -7,7 +7,7 @@ module.exports = {
 	sections: [
 		{
 			name: 'Introduction',
-			components: 'src/components/AppButton.vue'
+			content: 'src/components/Introduction.md'
 		},
 		{
 			name: 'Components',

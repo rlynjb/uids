@@ -74,7 +74,8 @@ export default {
 }
 </script>
 
-<style lang="postcss">
+<style>
+@import "../../assets/tailwind.css";
 .breadcrumbs li {
   text-transform: capitalize;
 }
@@ -82,10 +83,10 @@ export default {
 
 
 
-<doc lang="md">
+<docs lang="md">
 ##### Basic usage
 ```js
-<Breadcrumb />
+<BreadcrumbUI />
 ```
 
 ##### Set Parent Page
@@ -102,8 +103,8 @@ const paths = [
   }
 ]
 
-<Breadcrumb
+<BreadcrumbUI
   :parent-paths="paths"
 />
 ```
-</doc>
+</docs>

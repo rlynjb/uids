@@ -1,20 +1,20 @@
 # uids
 
-install vue using vue-cli
+1. install vue using vue-cli
 follow vue styleguidist instruction here: https://vue-styleguidist.github.io/docs/GettingStarted.html#_1-install
 
-install tailwindcss via vue-cli
+2. install tailwindcss via vue-cli
 - https://tailwindcss.com/docs/installation
 - add to vue-cli: https://www.npmjs.com/package/vue-cli-plugin-tailwind
 
-install typescript via vue-cli
+3. install typescript via vue-cli
 - run `sudo vue add typescript`
+
+4. install and configure daisyui
+- https://daisyui.com/docs/install/
 
 Built with vue3 and vue styleguist
 
-Backlog:
-- wire up tailwindcss and daisycss
-- wire up typescript
 
 ## Project setup
 ```

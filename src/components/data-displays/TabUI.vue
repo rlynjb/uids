@@ -84,7 +84,7 @@ export default {
 ```js
 //import { ref } from "vue"
 
-<Tab
+<TabUI
   ref="tab_tref"
   :tabs="['Tab1', 'Tab2', 'Tab3']"
   default-tab="Tab1"
