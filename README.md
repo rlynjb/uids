@@ -26,9 +26,10 @@ npm run movebuild
 ```
 
 ## TODOs
-- follow docs to document Events in vue3
+- rewrite components to use vue3 setup. docs to document Events in vue3
 - https://vue-styleguidist.github.io/docs/Documenting.html#setup-syntax
-- on sample code, how to use vue.js
+- ~~on sample code, how to use vue.js~~
+- checkout template ref https://stackoverflow.com/questions/67033933/cant-use-template-ref-on-component-in-vue-3-composition-api#answers-header
 - stepsui, how to use vue.js on code sample
 - on tabsui, how t use vue.js on code sample
 - ~~load icons (provided svg icon option)~~
