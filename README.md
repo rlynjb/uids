@@ -31,7 +31,6 @@ npm run movebuild
 - on sample code, how to use vue.js
 - stepsui, how to use vue.js on code sample
 - on tabsui, how t use vue.js on code sample
-
 - ~~load icons (provided svg icon option)~~
 - set general theme
 - ~~on paginationUI, make component flush on right~~
