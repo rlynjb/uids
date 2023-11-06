@@ -33,6 +33,7 @@ import {
   defineProps,
   toRefs,
   //defineEmits
+  defineExpose,
 } from 'vue'
 
 /**
@@ -56,7 +57,7 @@ const { show } = toRefs(props)
 const l_show = ref(false)
 
 watch(
-  () => show,
+  () => show.value,
   () => {
     l_show.value = true
     //emit('modalStatus', l_show.value)
@@ -73,6 +74,19 @@ const closeModal = () => {
   l_show.value = false
   //emit('modalStatus', l_show.value)
 }
+
+/**
+ * Gets called to open modal.
+ * 
+ * @public
+ */
+const showModal = () => {
+  l_show.value = true
+}
+
+defineExpose({
+  showModal,
+})
 </script>
 
 
@@ -96,52 +110,3 @@ const closeModal = () => {
   line-height: 1;
 }
 </style>
-
-
-<docs lang="md">
-  ##### Basic usage
-  ```js
-  <template>
-    <button
-      @click="() => showModal.value = showModal.value ? false : true"
-    >
-      open modal
-    </button>
-
-    <Modal
-      :show="showModal"
-    >
-      Test content
-    </Modal>
-  </template>
-  
-  <script setup>
-    import { ref } from "vue"
-    const showModal = ref(false)
-  </script>
-  ```
-
-  ##### Trigger close modal method
-  ```ts
-  <template>
-    <button
-      @click="() => modal_tref?.closeModal()"
-    >
-      close modal
-    </button>
-
-    <Modal
-      ref="modal_tref"
-      :show="showModal"
-    >
-      Test content
-    </Modal>
-  </template>
-
-  <script setup>
-    import { ref } from "vue"
-    const modal_tref = ref<InstanceType<typeof Modal>>()
-    const showModal = false
-  </script>
-  ```
-</docs>
