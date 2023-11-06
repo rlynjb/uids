@@ -27,13 +27,15 @@ npm run movebuild
 
 ## TODOs
 - follow docs to document Events in vue3
-- ~~load icons (provided svg icon option)~~
-- set general theme
+- https://vue-styleguidist.github.io/docs/Documenting.html#setup-syntax
 - on sample code, how to use vue.js
-- ~~on paginationUI, make component flush on right~~
-- on select multiple field, make it work
 - stepsui, how to use vue.js on code sample
 - on tabsui, how t use vue.js on code sample
+
+- ~~load icons (provided svg icon option)~~
+- set general theme
+- ~~on paginationUI, make component flush on right~~
+- on select multiple field, make it work
 - ~~textfieldui, implement usages~~
 - toastui, implement usages
 
@@ -43,6 +45,8 @@ npm run movebuild
 - component view code, show by default
 - set official UI styleguide name
 - display components on each own page
+- convert to react component
+- create test
 
 
 ## Project setup
