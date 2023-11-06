@@ -17,13 +17,13 @@
         :class="disabled ? 'disabled' : ''"
       >
         <span
-          v-if="!selected.length"
+          v-if="selected && !selected.length"
           :class="'select-multiple-placeholder sm-placeholder-' + uid"
         >
           {{ placeholder }}
         </span>
         <span
-          v-for="(v, vIndex) in selected as any[]"
+          v-for="(v, vIndex) in selected"
           :key="'v-' + vIndex"
           class="badge px-3 py-3 mr-1"
         >
@@ -50,7 +50,7 @@
         :class="('sm-listOption-' + uid) + (' grid-cols-' + columns)"
       >
         <li
-          v-for="(item, itemIndex) in (options as any)"
+          v-for="(item, itemIndex) in options"
           :key="'item-'+itemIndex"
           :class="('sm-option-' + uid) + ' selectMultiple-option ' + (findActive(item) && 'active') + ' ' + (checkIfDisableOption(item) && 'disable')"
           @click="add(item)"
@@ -64,15 +64,20 @@
 
 <script lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import { ref, watch, onMounted, onUnmounted } from 'vue'
+import {
+  ref,
+  watch,
+  onMounted,
+  onUnmounted
+} from 'vue'
 
 /**
  * A fancy select field that allows multiple values. Custom options layout. Detects selected value state.
  * 
- * @displayName SelectMultipleField
+ * @displayName SelectMultipleFieldUI
  */
 export default {
-  name: "SelectMultipleField",
+  name: "SelectMultipleFieldUI",
   props: {
     label: {
       type: String,
@@ -92,7 +97,7 @@ export default {
     },
     options: {
       type: Array,
-      default: () => [ { label: 'test label ', value: 'test value' } ],
+      default: () => [ { label: 'test label ', value: 'test value' } ] as any[],
     },
     columns: {
       type: String,
@@ -100,7 +105,7 @@ export default {
     },
     selected: {
       type: Array,
-      default: () => []
+      default: () => [{ label: 'test label ', value: 'test value' }] as any
     },
     disableOptions: {
       type: Array,
@@ -266,21 +271,3 @@ export default {
   z-index: 9;
 }
 </style>
-
-
-
-<docs lang="md">
-  ##### Basic usage
-  ```js
-  const options = [
-    { label: "option1", value: "option1" }
-  ]
-  const selected = []
-
-  <SelectMultipleField
-    label="Sample field"
-    :options="options"
-    :selected="selected"
-  />
-  ```
-</docs>

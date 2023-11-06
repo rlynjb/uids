@@ -86,6 +86,7 @@ const showModal = () => {
 
 defineExpose({
   showModal,
+  closeModal,
 })
 </script>
 

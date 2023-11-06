@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./public/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  safelist: [
+    'grid-cols-2'
+  ],
   presets: [],
   darkMode: 'media', // or 'class'
   theme: {
