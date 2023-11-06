@@ -34,7 +34,7 @@ npm run movebuild
 - on select multiple field, make it work
 - stepsui, how to use vue.js on code sample
 - on tabsui, how t use vue.js on code sample
-- textfieldui, implement usages
+- ~~textfieldui, implement usages~~
 - toastui, implement usages
 
 ## Backlog
