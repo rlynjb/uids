@@ -28,16 +28,17 @@ npm run movebuild
 ## TODOs
 - rewrite components to use vue3 setup. docs to document Events in vue3
 - https://vue-styleguidist.github.io/docs/Documenting.html#setup-syntax
-- ~~on sample code, how to use vue.js~~
-- checkout template ref https://stackoverflow.com/questions/67033933/cant-use-template-ref-on-component-in-vue-3-composition-api#answers-header
+- start using defineExpose
+- template ref is not supported in vue-styleguidist
+- https://stackoverflow.com/questions/67033933/cant-use-template-ref-on-component-in-vue-3-composition-api#answers-header
 - stepsui, how to use vue.js on code sample
 - on tabsui, how t use vue.js on code sample
-- ~~load icons (provided svg icon option)~~
 - set general theme
-- ~~on paginationUI, make component flush on right~~
 - on select multiple field, make it work
-- ~~textfieldui, implement usages~~
 - toastui, implement usages
+- ~~load icons (provided svg icon option)~~
+- ~~on paginationUI, make component flush on right~~
+- ~~textfieldui, implement usages~~
 
 ## Backlog
 - redesign/relayout UI stylguidist
