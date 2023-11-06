@@ -1,7 +1,7 @@
 <template>
   <div class="modal-widget">
     <div
-      v-if="showModal"
+      v-if="l_show"
       class="modal"
     >
       <div class="modal-box rounded-none relative">
@@ -25,50 +25,56 @@
   </div><!-- /modal-widget -->
 </template>
 
-<script lang="ts">
-import { ref, watch } from 'vue'
+
+<script setup lang="ts">
+import {
+  ref,
+  watch,
+  defineProps,
+  toRefs,
+  //defineEmits
+} from 'vue'
 
 /**
  * A simple modal ui
  * @displayName ModalUI
  */
-export default {
-  name: "ModalUI",
-  props: {
-    show: {
-      type: Boolean,
-      default: false,
-    },
+const props = defineProps({
+  /**
+   * Open or close modal
+   * 
+   * @values true, false
+   */
+  show: {
+    type: Boolean,
+    default: false,
   },
+})
+const { show } = toRefs(props)
+//const emit = defineEmits(['modalStatus'])
 
-  setup(props: any, context: any) {
-    const showModal = ref(false)
+const l_show = ref(false)
 
-    watch(
-      () => props.show,
-      () => {
-        showModal.value = true
-        context.emit('modalStatus', showModal.value)
-      }
-    )
-
-    /**
-     * Triggers to close modal.
-     * @event click
-     * @type {Event}
-     */
-    const closeModal = () => {
-      showModal.value = false
-      context.emit('modalStatus', showModal.value)
-    }
-
-    return {
-      showModal,
-      closeModal,
-    }
+watch(
+  () => show,
+  () => {
+    l_show.value = true
+    //emit('modalStatus', l_show.value)
   }
+)
+
+
+/**
+ * Gets called to close modal.
+ * 
+ * @public
+ */
+const closeModal = () => {
+  l_show.value = false
+  //emit('modalStatus', l_show.value)
 }
 </script>
+
 
 <style scope>
 @import "../../assets/tailwind.css";
@@ -94,35 +100,48 @@ export default {
 
 <docs lang="md">
   ##### Basic usage
-  ```vue
-  // vue3 implementation
-  import { ref } from "vue"
-  //const modal_tref = ref<InstanceType<typeof Modal>>()
-  let showModal = false
+  ```js
+  <template>
+    <button
+      @click="() => showModal.value = showModal.value ? false : true"
+    >
+      open modal
+    </button>
 
-  <button @click="() => showModal = showModal ? false : true">
-    open modal
-  </button>
-
-  <Modal
-    :show="showModal"
-  >
-    Test content
-  </Modal>
+    <Modal
+      :show="showModal"
+    >
+      Test content
+    </Modal>
+  </template>
+  
+  <script setup>
+    import { ref } from "vue"
+    const showModal = ref(false)
+  </script>
   ```
 
   ##### Trigger close modal method
-  ```js
-  // vue3 implementation
-  // import { ref } from "vue"
-  // const modal_tref = ref<InstanceType<typeof Modal>>()
-  const showModal = false
+  ```ts
+  <template>
+    <button
+      @click="() => modal_tref?.closeModal()"
+    >
+      close modal
+    </button>
 
-  <Modal
-    ref="modal_tref"
-    :show="showModal"
-  >
-    Test content
-  </Modal>
+    <Modal
+      ref="modal_tref"
+      :show="showModal"
+    >
+      Test content
+    </Modal>
+  </template>
+
+  <script setup>
+    import { ref } from "vue"
+    const modal_tref = ref<InstanceType<typeof Modal>>()
+    const showModal = false
+  </script>
   ```
 </docs>
