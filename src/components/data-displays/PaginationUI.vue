@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination text-right">
+  <div class="pagination">
     <span>Items per page:</span>
     <span>
       <select
@@ -17,12 +17,15 @@
       1-{{ l_itemsPerPage }} of {{ l_totalItems }} items
     </span>
     <span>
-      <IconButton
-        icon-name="pg-arrow_left"
+      <button
         class="btn-ghost p-1"
         :disabled="disablePrev"
         @click="update('currentPage', (l_currentPage--) - 1)"
-      />
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+      </button>
     </span>
 
     <span>
@@ -30,12 +33,15 @@
     </span>
 
     <span>
-      <IconButton
-        icon-name="pg-arrow_right"
+      <button
         class="btn-ghost p-1"
         :disabled="disableNext"
         @click="update('currentPage', (l_currentPage++) + 1)"
-      />
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
     </span>
   </div>
 </template>

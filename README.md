@@ -30,7 +30,7 @@ npm run movebuild
 - ~~load icons (provided svg icon option)~~
 - set general theme
 - on sample code, how to use vue.js
-- on paginationUI, make component flush on right
+- ~~on paginationUI, make component flush on right~~
 - on select multiple field, make it work
 - stepsui, how to use vue.js on code sample
 - on tabsui, how t use vue.js on code sample

@@ -9,16 +9,12 @@
           class="btn btn-ghost modal-close"
           @click="closeModal"
         >
-          <span class="icon pg-close" />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
         </button>
 
-        <button
-          class="btn btn-ghost modal-close"
-          @click="closeModal"
-        >
-          x
-        </button>
-
+        <!-- @slot Display content -->
         <slot />
       </div>
       <div
@@ -30,9 +26,6 @@
 </template>
 
 <script lang="ts">
-// ui
-//import IconButton from "@/components/ui/actions/IconButton.vue"
-
 import { ref, watch } from 'vue'
 
 /**
@@ -41,9 +34,6 @@ import { ref, watch } from 'vue'
  */
 export default {
   name: "ModalUI",
-  components: {
-    //IconButton
-  },
   props: {
     show: {
       type: Boolean,
@@ -64,6 +54,8 @@ export default {
 
     /**
      * Triggers to close modal.
+     * @event click
+     * @type {Event}
      */
     const closeModal = () => {
       showModal.value = false
@@ -102,11 +94,15 @@ export default {
 
 <docs lang="md">
   ##### Basic usage
-  ```js
+  ```vue
   // vue3 implementation
-  // import { ref } from "vue"
-  // const modal_tref = ref<InstanceType<typeof Modal>>()
-  const showModal = false
+  import { ref } from "vue"
+  //const modal_tref = ref<InstanceType<typeof Modal>>()
+  let showModal = false
+
+  <button @click="() => showModal = showModal ? false : true">
+    open modal
+  </button>
 
   <Modal
     :show="showModal"
