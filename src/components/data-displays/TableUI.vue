@@ -11,7 +11,7 @@
         class="table-auto table-zebra table-normal shadow"
       >
         <thead
-          class="bg-black text-white text-left"
+          class="bg-secondary text-white text-left"
         >
           <tr>
             <th
@@ -52,7 +52,7 @@
               <span
                 v-if="row.settings_link[rowKey]"
                 class="row-link text-primary"
-                @click="goto(row.settings_link[rowKey])"
+                @click="goto(row.raw)"
               >
                 {{ rowVal }}
               </span>
@@ -70,7 +70,16 @@
                   class="btn-link mr-2"
                   @click="() => $emit(btn.emit, row.raw)"
                 >
-                  {{ btn.label }}
+                  <span
+                    v-if="btn.icon"
+                    class="ml-2 text-lg"
+                    :class="btn.icon"
+                  />
+                  <span
+                    v-if="btn.label"
+                  >
+                    {{ btn.label }}
+                  </span>
                 </button>
               </div>
 
@@ -129,10 +138,11 @@ export default {
      *    field: '', // name of object property from API respond object
      *    align: 'text-center' || 'text-right',
      *    sortable: true || false,
-     *    link: '',
+     *    link: true || false,
      *    button: [
      *      {
      *        label: '',
+     *        icon: '',
      *        emit: ''
      *      }
      *    ]
@@ -302,8 +312,6 @@ export default {
   cursor: pointer;
 }
 </style>
-
-
 
 
 <docs lang="md">
