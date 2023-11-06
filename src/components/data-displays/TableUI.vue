@@ -106,9 +106,14 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import type { PropType } from 'vue';
-import { onMounted, ref, watch } from 'vue'
+import {
+  onMounted,
+  ref,
+  watch,
+  toRefs,
+} from 'vue'
 
 interface IColumn {
   name: string;
@@ -127,164 +132,158 @@ interface IColumn {
  * 
  * @displayName TableUI 
  */
-export default {
-  props: {
-    /**
-     * The column available settings for table.
-     * @example
-     * columns: [
-     *  {
-     *    name: '', // readable label of object property from API respond object
-     *    field: '', // name of object property from API respond object
-     *    align: 'text-center' || 'text-right',
-     *    sortable: true || false,
-     *    link: true || false,
-     *    button: [
-     *      {
-     *        label: '',
-     *        icon: '',
-     *        emit: ''
-     *      }
-     *    ]
-     *  }
-     * ]
-     */
-    columns: {
-      type: Array as PropType<IColumn[]>,
-      default: () => {
-        return [
-          {
-            name: 'Column 1',
-            field: 'Column1',
-          }
-        ];
-      },
-    },
-    /**
-     * The content from API response object that will match field in each column.
-     */
-    rows: {
-      type: Array,
-      default: () => {
-        return [
-          {
-            Column1: 'col1 valuasdasde',
-          }
-        ];
-      },
-    },
-    /**
-     * The initial column that is sortable.
-     * @values column field property value
-     */
-    sortField: {
-      type: String,
-      default: '',
-    },
-    /**
-     * The initial sorting order for column.
-     * @values asc, desc
-     */
-    sortOrder: {
-      type: String,
-      default: 'asc',
+const props = defineProps({
+  /**
+   * The column available settings for table.
+   * @example
+   * columns: [
+   *  {
+   *    name: '', // readable label of object property from API respond object
+   *    field: '', // name of object property from API respond object
+   *    align: 'text-center' || 'text-right',
+   *    sortable: true || false,
+   *    link: true || false,
+   *    button: [
+   *      {
+   *        label: '',
+   *        icon: '',
+   *        emit: ''
+   *      }
+   *    ]
+   *  }
+   * ]
+   */
+  columns: {
+    type: Array as PropType<IColumn[]>,
+    default: () => {
+      return [
+        {
+          name: 'Column 1',
+          field: 'Column1',
+        }
+      ];
     },
   },
+  /**
+   * The content from API response object that will match field in each column.
+   */
+  rows: {
+    type: Array,
+    default: () => {
+      return [
+        {
+          Column1: 'col1 valuasdasde',
+        }
+      ];
+    },
+  },
+  /**
+   * The initial column that is sortable.
+   * @values column field property value
+   */
+  sortField: {
+    type: String,
+    default: '',
+  },
+  /**
+   * The initial sorting order for column.
+   * @values asc, desc
+   */
+  sortOrder: {
+    type: String,
+    default: 'asc',
+  },
+})
+const {
+  columns,
+  rows,
+} = toRefs(props)
+const emit = defineEmits(['goto', 'sortColumn', ''])
 
-  setup(props: any, context: any) {
-    const l_rows = ref<any[]>([])
-    const reverse = ref(false)
-    const sortOrderTracker = ref({}) as any
+const l_rows = ref<any[]>([])
+const sortOrderTracker = ref({}) as any
 
-    watch(
-      () => props.rows,
-      () => {
-        matchRowDataByColumnField()
+watch(
+  () => props.rows,
+  () => {
+    matchRowDataByColumnField()
+  }
+)
+
+onMounted(() => {
+  matchRowDataByColumnField()
+
+  sortOrderTracker.value = {
+    [props.sortField]: props.sortOrder
+  }
+})
+
+const goto = (val: any) => {
+  /**
+   * Triggers when the link field is clicked.
+   * 
+   * @property {object} val returns a raw/complete data object of row item.
+   */
+  emit('goto', val)
+}
+
+const matchRowDataByColumnField = () => {
+  l_rows.value = props.rows.map((row: any) => {
+    const rowdata: any = {
+      display: {},
+      raw: { ...row },
+      settings_link: {}, // field_name/column: row_value (object || string)
+      settings_button: {}, // field_name/column: row_value (object || string)
+      settings_align: {}, // field_name/column: row_value (object || string)
+    };
+
+    props.columns.forEach((col: any) => {
+      rowdata.display[col.field] = row[col.field]
+
+      // if a link is set, add to settings field as key and
+      // which property value it will be set as a link
+      if (col.link) {
+        rowdata.settings_link[col.field] = row[col.link]
       }
-    )
 
-    onMounted(() => {
-      matchRowDataByColumnField()
+      if (col.button) {
+        rowdata.settings_button[col.field] = col.button
+      }
 
-      sortOrderTracker.value = {
-        [props.sortField]: props.sortOrder
+      if (col.align) {
+        rowdata.settings_align[col.field] = col.align
       }
     })
-
-    const goto = (val: any) => {
-      /**
-       * Triggers when the link field is clicked.
-       * 
-       * @property {object} val returns a raw/complete data object of row item.
-       */
-       context.emit('goto', val)
-    }
-
-    const matchRowDataByColumnField = () => {
-      l_rows.value = props.rows.map((row: any) => {
-        const rowdata: any = {
-          display: {},
-          raw: { ...row },
-          settings_link: {}, // field_name/column: row_value (object || string)
-          settings_button: {}, // field_name/column: row_value (object || string)
-          settings_align: {}, // field_name/column: row_value (object || string)
-        };
-
-        props.columns.forEach((col: any) => {
-          rowdata.display[col.field] = row[col.field]
-
-          // if a link is set, add to settings field as key and
-          // which property value it will be set as a link
-          if (col.link) {
-            rowdata.settings_link[col.field] = row[col.link]
-          }
-
-          if (col.button) {
-            rowdata.settings_button[col.field] = col.button
-          }
-
-          if (col.align) {
-            rowdata.settings_align[col.field] = col.align
-          }
-        })
-        return rowdata
-      })
-    }
-
-    const sortColumn = (fieldName: string, sortOrder: string) => {
-      sortOrderTracker.value = {}
-
-      if (sortOrder === 'asc') {
-        sortOrderTracker.value[fieldName] = 'desc'
-      } else {
-        sortOrderTracker.value[fieldName] = 'asc'
-      }
-
-      /**
-       * Triggers when column label is clicked.
-       * 
-       * @property {string} fieldName returns name of field.
-       * @property {string} sortOrder returns order of sort.
-       */
-      context.emit('sortColumn', { fieldName, sortOrder });
-    }
-
-    const formatDate = (dateString: string) => {
-      const date = new Date(dateString);
-      return new Intl.DateTimeFormat('default', { dateStyle: 'long' }).format(date)
-    }
-
-
-    return {
-      l_rows,
-      reverse,
-      sortOrderTracker,
-      goto,
-      sortColumn,
-      formatDate,
-    }
-  }
+    return rowdata
+  })
 }
+
+const sortColumn = (fieldName: string, sortOrder: string) => {
+  sortOrderTracker.value = {}
+
+  if (sortOrder === 'asc') {
+    sortOrderTracker.value[fieldName] = 'desc'
+  } else {
+    sortOrderTracker.value[fieldName] = 'asc'
+  }
+
+  /**
+   * Triggers when column label is clicked.
+   * 
+   * @property {string} fieldName returns name of field.
+   * @property {string} sortOrder returns order of sort.
+   */
+  emit('sortColumn', { fieldName, sortOrder });
+}
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('default', { dateStyle: 'long' }).format(date)
+}
+
+defineExpose({
+  goto,
+})
 </script>
 
 <style scope>
