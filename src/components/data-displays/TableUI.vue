@@ -113,6 +113,9 @@ import {
   ref,
   watch,
   toRefs,
+  defineProps,
+  defineEmits,
+  defineExpose,
 } from 'vue'
 
 interface IColumn {

@@ -18,7 +18,7 @@ follow vue styleguidist instruction here: https://vue-styleguidist.github.io/doc
 
 5. use https://heroicons.com/ for svg/jsx icons
 
-## deploy to github pages
+## Deploy to Github Pages
 ```
 npm run cleanbuild
 npm run styleguide:build
@@ -26,19 +26,18 @@ npm run movebuild
 ```
 
 ## TODOs
+- SelectMultipleFieldUI - set code snippets for remaining use case.
+- StepsUI - use ref template to switch contents
+- TableUI - add code snippet for "Add buttons"; add code snippet for "Make a column sortable."
+- TabsUI - use ref template to switch contents
+- ToastUI - set code scnippets/usages
+- set Vue-Styleguidist theme
 - rewrite components to use vue3 setup. docs to document Events in vue3
 - https://vue-styleguidist.github.io/docs/Documenting.html#setup-syntax
-- start using defineExpose
+
+## Bugs
 - template ref is not supported in vue-styleguidist
 - https://stackoverflow.com/questions/67033933/cant-use-template-ref-on-component-in-vue-3-composition-api#answers-header
-- stepsui, how to use vue.js on code sample
-- on tabsui, how t use vue.js on code sample
-- set general theme
-- on select multiple field, make it work
-- toastui, implement usages
-- ~~load icons (provided svg icon option)~~
-- ~~on paginationUI, make component flush on right~~
-- ~~textfieldui, implement usages~~
 
 ## Backlog
 - redesign/relayout UI stylguidist
