@@ -57,10 +57,6 @@
                 {{ rowVal }}
               </span>
 
-              <span v-else-if="String(rowKey) === 'created'">
-                {{ formatDate(rowVal) }}
-              </span>
-
               <div
                 v-else-if="row.settings_button[rowKey]"
               >
@@ -135,7 +131,6 @@ interface IColumn {
 /**
  * A lightweight Table UI component built with 2Dimensional Array and Hash Object.
  * TODO:
- * - format column data
  * - visible columns
  * 
  * @displayName TableUI 
@@ -158,7 +153,7 @@ const props = defineProps({
    *        iconSvg: ``, // tempalte literal value, ref heroicons.com
    *        emit: ''
    *      }
-   *    ]
+   *    ],
    *  }
    * ]
    */
@@ -283,11 +278,6 @@ const sortColumn = (fieldName: string, sortOrder: string) => {
    * @property {string} sortOrder returns order of sort.
    */
   emit('sortColumn', { fieldName, sortOrder });
-}
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat('default', { dateStyle: 'long' }).format(date)
 }
 
 defineExpose({
