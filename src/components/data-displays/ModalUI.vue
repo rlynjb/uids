@@ -4,7 +4,10 @@
       v-if="l_show"
       class="modal"
     >
-      <div class="modal-box rounded-none relative">
+      <div
+        class="modal-box rounded-none relative"
+        :class="modalboxClass"
+      >
         <button
           class="btn btn-ghost modal-close rounded-none"
           @click="closeModal"
@@ -50,8 +53,12 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  modalboxClass: {
+    type: String,
+    default: '',
+  },
 })
-const { show } = toRefs(props)
+const { show, modalboxClass } = toRefs(props)
 //const emit = defineEmits(['modalStatus'])
 
 const l_show = ref(false)
@@ -93,7 +100,7 @@ defineExpose({
 
 <style scope>
 @import "../../assets/tailwind.css";
-
+  
 .modal-widget .modal {
   visibility: visible;
   opacity: 1;
