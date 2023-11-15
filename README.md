@@ -24,8 +24,8 @@ npm run cleanbuild
 npm run styleguide:build
 npm run movebuild
 ```
-
-## TODOs
+## Tasks:
+### TODOs
 - SelectMultipleFieldUI - set code snippets for remaining use case.
 - StepsUI - use ref template to switch contents
 - TableUI - add code snippet for "Add buttons"; add code snippet for "Make a column sortable."
@@ -35,11 +35,11 @@ npm run movebuild
 - rewrite components to use vue3 setup. docs to document Events in vue3
 - https://vue-styleguidist.github.io/docs/Documenting.html#setup-syntax
 
-## Bugs
+### Bugs
 - template ref is not supported in vue-styleguidist
 - https://stackoverflow.com/questions/67033933/cant-use-template-ref-on-component-in-vue-3-composition-api#answers-header
 
-## Backlog
+### Backlog
 - redesign/relayout UI stylguidist
 - component props section, show by default
 - component view code, show by default
