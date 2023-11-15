@@ -71,6 +71,7 @@ const columns = [
   {
     name: "Actions",
     field: "actions",
+    align: "text-center",
     button: [
       {
         emit: "delete-item",
@@ -87,16 +88,16 @@ const data = [
   }
 ]
 /**
- *  @returns {string} id - The id of data pass to component
+ *  @returns {object} objVal - The raw data of item
  */
-const gotoLink = (id) => {
+const deleteItem = (objVal) => {
   // do stuff here
 }
 
 <TableUI
   :columns="columns"
   :rows="data"
-  @goto="gotoLink"
+  @delete-item="deleteItem"
 />
 ```
 
@@ -134,4 +135,43 @@ const data = [
 
 
 ##### Make a column sortable.
+```js
+const columns = [
+  {
+    name: "Title",
+    field: "title",
+    sortable: true,
+  },
+  {
+    name: "Date",
+    field: "date"
+  },
+  {
+    name: "Complete",
+    field: "complete",
+    align: "text-center"
+  }
+]
+const data = [
+  {
+    title: "sample title text",
+    date: "00/00/00",
+    complete: "90%"
+  }
+]
 
+/**
+ *  @returns {object} { fieldName, sortOrder }
+ *    fieldName - name of field that need to be sorted
+ *    sortOrder - order of sort: asc, desc
+ */
+const sortColumn = ({ fieldName, sortOrder}) => {
+  // do stuff here
+}
+
+<TableUI
+  :columns="columns"
+  :rows="data"
+  @sort-column="sortColumn"
+/>
+```
