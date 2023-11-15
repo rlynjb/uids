@@ -1,6 +1,9 @@
 # uids
 https://rlynjb.github.io/uids/
 
+## Plan
+![alt text](public/UI_Design_System_plan.png "Class Diagram")
+
 ## How to configure
 
 1. install vue using vue-cli
