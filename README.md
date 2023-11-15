@@ -31,7 +31,7 @@ npm run movebuild
 ### TODOs
 - SelectMultipleFieldUI - set code snippets for remaining use case.
 - StepsUI - use ref template to switch contents
-- TableUI - add code snippet for "Add buttons"; add code snippet for "Make a column sortable."
+- ~~TableUI - add code snippet for "Add buttons"; add code snippet for "Make a column sortable."~~
 - TabsUI - use ref template to switch contents
 - ToastUI - set code scnippets/usages
 - set Vue-Styleguidist theme
