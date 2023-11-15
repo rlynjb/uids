@@ -1,6 +1,8 @@
 # uids
 https://rlynjb.github.io/uids/
 
+## Plan
+![alt text](public/UI_Design_System_plan.png "Class Diagram")
 
 ## How to configure
 
@@ -72,6 +74,3 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
-
-## Plan
-![alt text](public/UI_Design_System_plan.png "Class Diagram")
