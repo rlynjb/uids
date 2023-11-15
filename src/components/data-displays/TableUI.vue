@@ -71,8 +71,13 @@
                   @click="() => $emit(btn.emit, row.raw)"
                 >
                   <span
+                    v-if="btn.iconSvg"
+                    class="ml-2 mr-2 text-lg inline-block align-middle"
+                    v-html="btn.iconSvg"
+                  />
+                  <span
                     v-if="btn.icon"
-                    class="ml-2 text-lg"
+                    class="ml-2 mr-2 text-lg inline-block align-middle"
                     :class="btn.icon"
                   />
                   <span
@@ -149,7 +154,8 @@ const props = defineProps({
    *    button: [
    *      {
    *        label: '',
-   *        icon: '',
+   *        icon: '', // class name of icon
+   *        iconSvg: ``, // tempalte literal value, ref heroicons.com
    *        emit: ''
    *      }
    *    ]
@@ -314,104 +320,3 @@ defineExpose({
   cursor: pointer;
 }
 </style>
-
-
-<docs lang="md">
-  ##### Set basic column settings
-  ```js
-  const columns = [
-    {
-      name: "Title",
-      field: "title"
-    },
-    {
-      name: "Date",
-      field: "date"
-    }
-  ]
-  const data = [
-    {
-      title: "sample title text",
-      date: "00/00/00"
-    }
-  ]
-
-  <TableUI
-    :columns="columns"
-    :rows="data"
-  />
-  ```
-
-  ##### Make a data record a link
-  ```js
-  const columns = [
-    {
-      name: "Title",
-      field: "title",
-      link: "id"
-    },
-    {
-      name: "Date",
-      field: "date"
-    }
-  ]
-  const data = [
-    {
-      id: "asd123",
-      title: "clickable title text",
-      date: "00/00/00"
-    }
-  ]
-  /**
-   *  @returns {string} id - The id of data pass to component
-   */
-  const gotoLink = (id) => {
-    // do stuff here
-  }
-
-  <TableUI
-    :columns="columns"
-    :rows="data"
-    @goto="gotoLink"
-  />
-  ```
-
-  ##### Add buttons
-
-
-  ##### Text align a data record
-  ```js
-  const columns = [
-    {
-      name: "Title",
-      field: "title"
-    },
-    {
-      name: "Date",
-      field: "date"
-    },
-    {
-      name: "Complete",
-      field: "complete",
-      align: "text-center"
-    }
-  ]
-  const data = [
-    {
-      title: "sample title text",
-      date: "00/00/00",
-      complete: "90%"
-    }
-  ]
-
-  <TableUI
-    :columns="columns"
-    :rows="data"
-  />
-  ```
-
-
-  ##### Make a column sortable.
-
-
-</docs>
