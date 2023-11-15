@@ -4,7 +4,7 @@ https://rlynjb.github.io/uids/
 ## Plan
 ![alt text](public/UI_Design_System_plan.png "Class Diagram")
 
-## How to configure
+## Project Setup and Configuration
 
 1. install vue using vue-cli
 follow vue styleguidist instruction here: https://vue-styleguidist.github.io/docs/GettingStarted.html#_1-install
@@ -21,56 +21,37 @@ follow vue styleguidist instruction here: https://vue-styleguidist.github.io/doc
 
 5. use https://heroicons.com/ for svg/jsx icons
 
+## Start local dev
+```
+npm run styleguide
+```
+
 ## Deploy to Github Pages
 ```
 npm run cleanbuild
 npm run styleguide:build
 npm run movebuild
 ```
+
 ## Tasks:
+
 ### TODOs
 - SelectMultipleFieldUI - set code snippets for remaining use case.
 - StepsUI - use ref template to switch contents
 - ~~TableUI - add code snippet for "Add buttons"; add code snippet for "Make a column sortable."~~
 - TabsUI - use ref template to switch contents
 - ToastUI - set code scnippets/usages
-- set Vue-Styleguidist theme
-- rewrite components to use vue3 setup. docs to document Events in vue3
-- https://vue-styleguidist.github.io/docs/Documenting.html#setup-syntax
+- Add a Chart/graph component using Pathfinder Visualization
+- rewrite components to use vue3 setup. docs to document Events in vue3 - https://vue-styleguidist.github.io/docs/Documenting.html#setup-syntax
 
 ### Bugs
-- template ref is not supported in vue-styleguidist
-- https://stackoverflow.com/questions/67033933/cant-use-template-ref-on-component-in-vue-3-composition-api#answers-header
+- template ref is not supported in vue-styleguidist - https://stackoverflow.com/questions/67033933/cant-use-template-ref-on-component-in-vue-3-composition-api#answers-header
 
 ### Backlog
-- redesign/relayout UI stylguidist
-- component props section, show by default
-- component view code, show by default
+- Set Vue-Styleguidist theme. Check is possible to re-layout pages
+- Show component props section by default
+- Show component view code by default
 - set official UI styleguide name
 - display components on each own page
 - convert to react component
 - create test
-
-
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
