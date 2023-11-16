@@ -39,14 +39,14 @@ npm run movebuild
 - StepsUI - use ref template to switch contents
 - ~~TableUI - add code snippet for "Add buttons"; add code snippet for "Make a column sortable."~~
 - TabsUI - use ref template to switch contents
-- ToastUI - set code scnippets/usages
+- ToastUI - set code snippets/usages
 - Add a Chart/graph component using Pathfinder Visualization
-- rewrite components to use vue3 setup. docs to document Events in vue3 - https://vue-styleguidist.github.io/docs/Documenting.html#setup-syntax
 
 ### Bugs
 - template ref is not supported in vue-styleguidist - https://stackoverflow.com/questions/67033933/cant-use-template-ref-on-component-in-vue-3-composition-api#answers-header
 
 ### Backlog
+- rewrite components to use vue3 setup. docs to document Events in vue3 - https://vue-styleguidist.github.io/docs/Documenting.html#setup-syntax
 - Set Vue-Styleguidist theme. Check is possible to re-layout pages
 - Show component props section by default
 - Show component view code by default
