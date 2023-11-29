@@ -49,19 +49,50 @@
               class="pt-3 pb-3 pl-4 pr-4"
               :class="(row.settings_align[rowKey]) ? row.settings_align[rowKey] : ''"
             >
+              <!----- Value as Link ----->
               <span
-                v-if="row.settings_link[rowKey]"
+                v-if="row.settings_asLink[rowKey]"
                 class="row-link text-primary"
                 @click="goto(row.raw)"
               >
                 {{ rowVal }}
               </span>
+              <!----- end ----->
 
+
+              <!----- Value as Button ----->
+              <button
+                v-else-if="row.settings_asButton[rowKey]"
+                class="btn"
+                :class="row.settings_asButton[rowKey]"
+                @click="goto(row.raw)"
+              >
+                {{ rowVal }}
+              </button>
+              <!----- end ----->
+
+
+              <!----- Value as Multiple Buttons ----->
+              <div v-else-if="row.settings_asMultipleButtons[rowKey]">
+                <button
+                  v-for="(btnVal, btnIndex) in rowVal"
+                  :key="'multipleButton-'+btnIndex"
+                  class="btn"
+                  :class="btnVal.class"
+                  @click="() => $emit(btnVal.emit, row.raw)"
+                >
+                  {{ btnVal.label }}
+                </button>
+              </div>
+              <!----- end ----->
+
+
+              <!----- Custom Buttons ----->
               <div
-                v-else-if="row.settings_button[rowKey]"
+                v-else-if="row.settings_customButtons[rowKey]"
               >
                 <button
-                  v-for="(btn, btnIndex) in row.settings_button[rowKey]"
+                  v-for="(btn, btnIndex) in row.settings_customButtons[rowKey]"
                   :key="'btn-'+btnIndex"
                   class="btn-link mr-2"
                   @click="() => $emit(btn.emit, row.raw)"
@@ -72,9 +103,9 @@
                     v-html="btn.iconSvg"
                   />
                   <span
-                    v-if="btn.icon"
+                    v-if="btn.iconClass"
                     class="ml-2 mr-2 text-lg inline-block align-middle"
-                    :class="btn.icon"
+                    :class="btn.iconClass"
                   />
                   <span
                     v-if="btn.label"
@@ -83,10 +114,14 @@
                   </span>
                 </button>
               </div>
+              <!----- end ----->
 
+
+              <!----- Default Value ----->
               <span v-else>
                 {{ rowVal }}
               </span>
+              <!----- end ----->
             </td>
           </tr>
         </tbody>
@@ -124,8 +159,9 @@ interface IColumn {
   field: string;
   align?: string;
   sortable?: boolean;
-  link?: string; // field name of row.data we want to be as link value
-  button?: any[];
+  customButtons?: any[];
+  asLink?: string; // field name of row.data we want to be as link value
+  asButton?: string;
 }
 
 /**
@@ -145,15 +181,25 @@ const props = defineProps({
    *    field: '', // name of object property from API respond object
    *    align: 'text-center' || 'text-right',
    *    sortable: true || false,
-   *    link: true || false,
-   *    button: [
+   *    customButtons: [
    *      {
    *        label: '',
-   *        icon: '', // class name of icon
+   *        iconClass: '', // class name of icon
    *        iconSvg: ``, // tempalte literal value, ref heroicons.com
    *        emit: ''
    *      }
    *    ],
+   *    asLink: true || false, // field name of row.data we want to be as link value
+   *    asButton: '', // class name style of button
+   *    asMultipleButtons: true || false,
+   *    // accepts Array as value (row[{property_name}]) with object format of...
+   *    // [ 
+   *    //  {
+   *    //    label: '',
+   *    //    class: '', // usually style associated with button
+   *    //    emit: ''
+   *    //   }
+   *    // ]
    *  }
    * ]
    */
@@ -236,26 +282,36 @@ const matchRowDataByColumnField = () => {
     const rowdata: any = {
       display: {},
       raw: { ...row },
-      settings_link: {}, // field_name/column: row_value (object || string)
-      settings_button: {}, // field_name/column: row_value (object || string)
       settings_align: {}, // field_name/column: row_value (object || string)
+      settings_customButtons: {}, // field_name/column: row_value (object || string)
+      settings_asLink: {}, // field_name/column: row_value (object || string)
+      settings_asButton: {},
+      settings_asMultipleButtons: {},
     };
 
     props.columns.forEach((col: any) => {
       rowdata.display[col.field] = row[col.field]
 
-      // if a link is set, add to settings field as key and
-      // which property value it will be set as a link
-      if (col.link) {
-        rowdata.settings_link[col.field] = row[col.link]
-      }
-
-      if (col.button) {
-        rowdata.settings_button[col.field] = col.button
-      }
-
       if (col.align) {
         rowdata.settings_align[col.field] = col.align
+      }
+
+      if (col.customButtons) {
+        rowdata.settings_customButtons[col.field] = col.customButtons
+      }
+
+      // if a link is set, add to settings field as key and
+      // which property value it will be set as a link
+      if (col.asLink) {
+        rowdata.settings_asLink[col.field] = true
+      }
+
+      if (col.asButton) {
+        rowdata.settings_asButton[col.field] = true
+      }
+
+      if (col.asMultipleButtons) {
+        rowdata.settings_asMultipleButtons[col.field] = true
       }
     })
     return rowdata
