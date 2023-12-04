@@ -95,6 +95,7 @@
                   v-for="(btn, btnIndex) in row.settings_customButtons[rowKey]"
                   :key="'btn-'+btnIndex"
                   class="btn-link mr-2"
+                  :disabled="btn.disable"
                   @click="() => $emit(btn.emit, row.raw)"
                 >
                   <span
@@ -361,5 +362,9 @@ defineExpose({
 
 .table-widget .row-link {
   cursor: pointer;
+}
+
+.table-widget button[disabled] {
+  color: lightgrey;
 }
 </style>
