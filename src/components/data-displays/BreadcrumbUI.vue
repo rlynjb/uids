@@ -7,7 +7,7 @@
         <a @click="goto('/')">Home</a>
       </li> 
       <li
-        v-for="(bc, bcIndex) in parentPaths"
+        v-for="(bc, bcIndex) in parentPaths as any[]"
         :key="'bc-'+bcIndex"
       >
         <a @click="goto(bc.path)">{{ bc.name }}</a>
@@ -41,7 +41,7 @@ import { useRouter, useRoute } from 'vue-router'
  * @displayName BreadcrumbUI
  */
 export default {
-  name: "BreadcrumbUI",
+  name: "Breadcrumb",
   props: {
     parentPaths: {
       type: Array,
@@ -54,9 +54,7 @@ export default {
     const currentPage = ref('')
 
     onMounted(() => {
-      currentPage.value = route && route.name
-        ? (route.name as string).replace('_', ' ')
-        : 'sample current page name'
+      currentPage.value = (route.name as string).replaceAll('_', ' ')
     })
 
 
@@ -76,9 +74,7 @@ export default {
 }
 </script>
 
-<style scope>
-@import "../../assets/tailwind.css";
-
+<style lang="postcss">
 .breadcrumbs li {
   text-transform: capitalize;
 }
