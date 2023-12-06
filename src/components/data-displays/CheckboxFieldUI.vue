@@ -4,11 +4,12 @@
       class="label cursor-pointer"
     >
       <input
-        ref="tref_inputCheckbox"
+        ref="checkbox_tref"
         v-model="l_checked"
         type="checkbox"
         class="checkbox rounded-none"
         :disabled="disabled"
+        :value="l_value"
         @input="update"
       >
       <span class="label-text">
@@ -18,55 +19,53 @@
   </div>
 </template>
 
-<script lang="ts">
-import { ref, onMounted } from 'vue'
+<script setup lang="ts">
+import { ref } from "vue"
 /**
  * A simple checkbox field that returns check status and additional object value of checked item.
  * 
  * @displayName CheckboxFieldUI
  */
-export default {
-  name: "CheckboxField",
-  props: {
-    label: {
+
+
+const props = defineProps({
+  label: {
       type: String,
       default: 'Sample Label'
     },
-    checked: {
-      type: Boolean,
-      default: () => false
-    },
-    disabled: {
-      type: Boolean,
-      default: () => false
-    },
+  checked: {
+    type: Boolean,
+    default: () => false
   },
-
-  setup(props: any, context: any) {
-    const l_checked = ref(false)
-    //const tref_inputCheckbox = ref<InstanceType<typeof HTMLFormElement>>()
-    const tref_inputCheckbox = ref() as any
-
-    onMounted(() => {
-      l_checked.value = props.checked
-    })
-
-    const update = () => {
-      context.emit('update', { label: props.label, checked: (tref_inputCheckbox as HTMLFormElement).checked } )
-    }
-
-    return {
-      l_checked,
-      tref_inputCheckbox,
-      update,
-    }
+  value: {
+    type: String,
+    default: '',
+  },
+  disabled: {
+    type: Boolean,
+    default: () => false
   }
+})
+const emit = defineEmits(['update'])
+
+
+const l_checked = ref(props.checked)
+const l_value = ref(props.value)
+const checkbox_tref = ref<InstanceType<typeof HTMLFormElement>>()
+
+
+const update = (val: any) => {
+  emit('update',
+    {
+      label: props.label,
+      checked: checkbox_tref.value?.checked,
+      value: val.target.value
+    }
+  )
 }
 </script>
 
 <style>
-@import "../../assets/tailwind.css";
-
 .checkbox-field label {
   width: fit-content;
 }
