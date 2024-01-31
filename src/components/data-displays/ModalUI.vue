@@ -33,10 +33,10 @@
 import {
   ref,
   watch,
-  defineProps,
+  //defineProps,
   toRefs,
   //defineEmits
-  defineExpose,
+  //defineExpose,
 } from 'vue'
 
 /**
@@ -99,8 +99,6 @@ defineExpose({
 
 
 <style scope>
-@import "../../assets/tailwind.css";
-  
 .modal-widget .modal {
   visibility: visible;
   opacity: 1;
