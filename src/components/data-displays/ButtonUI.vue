@@ -1,46 +1,39 @@
 <template>
-  <button class="btn rounded-none">
+  <button
+    class="btn rounded h-fit min-h-8 py-3"
+    :disabled="disabled"
+  >
     <span :class="'icon '+ iconStart" />
-    <!-- @slot Inject svg icon BEFORE label -->
-    <slot name="iconStart"/>
     <span class="text">{{ label }}</span>
     <span :class="'icon '+ iconEnd" />
-    <!-- @slot Inject svg icon AFTER label -->
-    <slot name="iconEnd"/>
   </button>
 </template>
 
 <script lang="ts">
 export default {
-  name: "ButtonUI",
+  name: "Button",
   props: {
     label: {
       type: String,
       default: "Button Name",
     },
-    /**
-     * Inject font base icon BEFORE label
-     * @values icon-checkmark
-     */
     iconStart: {
       type: String,
       default: '',
     },
-    /**
-     * Inject font base icon AFTER label
-     * @values icon-checkmark
-     */
     iconEnd: {
       type: String,
       default: '',
-    }
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>
 
-<style scoped>
-@import "../../assets/tailwind.css";
-
+<style lang="postcss">
 .btn.btn-link,
 .btn.btn-link:hover {
   text-decoration-line: none;
