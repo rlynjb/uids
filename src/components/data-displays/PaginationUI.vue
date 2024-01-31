@@ -17,15 +17,12 @@
       1-{{ l_itemsPerPage }} of {{ l_totalItems }} items
     </span>
     <span>
-      <button
+      <IconButton
+        icon-name="pg-arrow_left"
         class="btn-ghost p-1"
         :disabled="disablePrev"
         @click="update('currentPage', (l_currentPage--) - 1)"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-        </svg>
-      </button>
+      />
     </span>
 
     <span>
@@ -33,15 +30,12 @@
     </span>
 
     <span>
-      <button
+      <IconButton
+        icon-name="pg-arrow_right"
         class="btn-ghost p-1"
         :disabled="disableNext"
         @click="update('currentPage', (l_currentPage++) + 1)"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-        </svg>
-      </button>
+      />
     </span>
   </div>
 </template>
@@ -49,20 +43,18 @@
 <script lang="ts">
 import { computed, ref, watch } from 'vue'
 
-/*
 import {
   IconButton
 } from '@/components'
-*/
 
 /**
  * A simple pagination that calculates total pages base on total items and items per page.
  * @displayName PaginationUI
  */
 export default {
-  name: "PaginationUI",
+  name: "PaginationNavigation",
   components: {
-    //IconButton,
+    IconButton,
   },
   props: {
     itemsPerPage: {
@@ -79,7 +71,7 @@ export default {
     },
   },
 
-  setup(props: any, context: any) {
+  setup(props) {
     const l_itemsPerPage = ref(props.itemsPerPage)
     const l_totalItems = ref(props.totalItems)
     const l_currentPage = ref(props.currentPage)
@@ -97,6 +89,17 @@ export default {
       l_currentPage.value = val
     })
 
+    return {
+      l_itemsPerPage,
+      l_totalItems,
+      l_currentPage,
+      totalPages,
+      disablePrev,
+      disableNext,
+    }
+  },
+
+  methods: {
     /**
      * Triggers when itemsPerPage and currentPage values changed.
      * 
@@ -105,51 +108,28 @@ export default {
      * @property {object} payload returns an object.
      * @public
      */
-    const update = (key: string, val: number) => {
+    update(key: string, val: number) {
       const payload = {
-        itemsPerPage: key === 'itemsPerPage' ? Number(val) : Number(l_itemsPerPage.value),
-        totalItems: key === 'totalItems' ? val : l_totalItems.value,
-        currentPage: key === 'currentPage' ? val : l_currentPage.value
+        itemsPerPage: key === 'itemsPerPage' ? Number(val) : Number(this.l_itemsPerPage),
+        totalItems: key === 'totalItems' ? val : this.l_totalItems,
+        currentPage: key === 'currentPage' ? val : this.l_currentPage
       }
 
-      context.emit('update', payload)
-    }
-
-    return {
-      l_itemsPerPage,
-      l_totalItems,
-      l_currentPage,
-      totalPages,
-      disablePrev,
-      disableNext,
-      update,
+      this.$emit('update', payload)
     }
   }
 }
 </script>
 
-<style scope>
-@import "../../assets/tailwind.css";
-
+<style scope lang="postcss">
 .pagination {
+  @apply text-right;
   font-size: 12px;
 }
 .pagination span {
-  display: inline-block;
-  margin-left: 10px;
+  @apply inline-block ml-2;
 }
 .pagination select {
-  border-radius: 0;
+  @apply border-0;
 }
 </style>
-
-
-<docs lang="md">
-  ##### Basic usage
-  ```js
-  const params_pagination = {
-
-  }
-  <PaginationUI />
-  ```
-</docs>
