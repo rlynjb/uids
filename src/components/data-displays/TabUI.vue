@@ -1,14 +1,20 @@
 <template>
-  <div class="tabs">
-    <a
-      v-for="(tab, tabIndex) in (tabs as string[])"
-      :key="'tab-'+tabIndex"
-      class="tab tab-lg tab-lifted"
-      :class="tab === currentTab ? 'tab-active' : ''"
-      @click="gotoTab(tab)"
-    >
-      {{ tab }}
-    </a> 
+  <div class="tab-component border">
+    <div class="tabs border-b bg-neutral-100 py-0 px-4">
+      <a
+        v-for="(tab, tabIndex) in (tabs as string[])"
+        :key="'tab-'+tabIndex"
+        class="tab min-h-14 text-sm text-black"
+        :class="tab === currentTab ? 'border-b-2 border-b-primary font-bold' : ''"
+        @click="gotoTab(tab)"
+      >
+        {{ tab }}
+      </a> 
+    </div>
+    
+    <div class="p-8">
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -21,7 +27,7 @@ import { ref } from 'vue'
  * @displayName TabUI
  */
 export default {
-  name: "TabUI",
+  name: "Tab",
   props: {
     /**
      * A list of tab labels.
@@ -41,7 +47,7 @@ export default {
     },
   },
 
-  setup(props: any) {
+  setup(props) {
     const currentTab = ref(props.defaultTab)
 
     /**
@@ -74,31 +80,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang="postcss">
 
 </style>
-
-
-<docs lang="md">
-##### Basic usage
-```js
-  // vue3 implementation
-  // import { ref } from "vue"
-  // const tab_ref = ref<InstanceType<typeof Tab>>()
-
-  <TabUI
-    ref="tab_tref"
-    :tabs="['Tab1', 'Tab2', 'Tab3']"
-    default-tab="Tab1"
-  />
-  <div v-show="tab_tref?.showTab('Tab1')">
-    Tab1
-  </div>
-  <div v-show="tab_tref?.showTab('Tab2')">
-    Tab2
-  </div>
-  <div v-show="tab_tref?.showTab('Tab3')">
-    Tab3
-  </div>
-```
-</docs>
