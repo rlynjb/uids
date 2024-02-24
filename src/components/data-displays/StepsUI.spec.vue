@@ -66,14 +66,14 @@ export default {
 
   computed: {
     currentStep() {
-      return this.l_progress.findIndex(p => p.active)
+      return this.l_progress.findIndex(p => p.active) as any
     },
   },
 
   mounted() {
     this.l_progress = this.progress
     // set active property
-    this.l_progress.forEach((v, indexV) => {
+    this.l_progress.forEach((v: any, indexV: any) => {
       if (indexV === 0) {
         v.active = true
       } else {

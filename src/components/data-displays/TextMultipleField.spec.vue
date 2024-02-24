@@ -4,7 +4,7 @@
   >
     <div class="form-control w-full">
       <label
-        v-if="label"
+        v-if="props.label"
         class="label s-field-label"
       >
         {{ label }}

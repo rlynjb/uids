@@ -14,5 +14,7 @@ module.exports = {
 			components: 'src/components/data-displays/[A-Z]*.vue'
 		}
 	],
-	
+	ignore: [
+		'**/components/data-displays/*.spec.vue'
+	]
 }
