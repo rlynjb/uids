@@ -5,23 +5,23 @@
       <slot name="filters" />
     </div>
 
-    <div class="cols-span-6">
+    <div class="max-w-screen-sm overflow-x-scroll md:max-w-screen-md lg:max-w-full lg:overflow-x-auto lg:cols-span-6">
       <table
         v-if="rows.length"
-        class="table-auto table-zebra table-normal shadow"
+        class="table table-zebra table-normal shadow"
       >
         <thead class="bg-secondary text-white text-left">
           <tr>
             <th
               v-for="(col, colIndex) in columns"
               :key="'col' + colIndex"
-              class="pt-2 pb-2 pl-4 pr-4 font-light"
-              :class="col.align ? col.align : ''"
+              class="w-max pt-2 pb-2 pl-4 pr-4 font-light"
+              :class="(col.align ? col.align : '') + ' ' + (col.selectAll ? 'selectBox' : '')"
             >
               <!----- if Sortable is enabled ----->
               <div
                 v-if="col.sortable"
-                class="cursor-pointer sortable"
+                class="flex items-center gap-2 cursor-pointer sortable"
                 @click="sortColumn(col.field, sortOrderTracker[col.field])"
               >
                 {{ col.name }}
@@ -38,17 +38,20 @@
               <!----- end ----->
 
               <!----- if column as Select Checkbox is enabled ----->
-              <div v-else-if="col.asSelectCheckbox">
+              <div v-else-if="col.selectAll">
                 {{ col.name }}
                 <input
-                  v-model="asSelectCheckbox_selectAll_value"
+                  v-model="selectAll_value"
                   type="checkbox"
-                  @change="asSelectCheckbox_selectAll"
+                  :disabled="disable_selectAll"
+                  @change="selectAll"
                 >
               </div>
               <!----- end ----->
 
-              <div v-else>
+              <div 
+                v-else
+              >
                 {{ col.name }}
               </div>
             </th>
@@ -60,54 +63,73 @@
             :key="'row' + rowIndex"
           >
             <td
-              v-for="(rowVal, rowKey) in row.display"
-              :key="'rowkey' + rowKey"
+              v-for="(fieldValue, fieldName) in row.display"
+              :key="'fieldName' + fieldName"
               class="pt-2 pb-2 pl-4 pr-4"
               :class="
-                row.settings_align[rowKey] ? row.settings_align[rowKey] : ''
+                (row.settings_align[fieldName] ? row.settings_align[fieldName] : '') + ' ' + (row.settings_selectAll[fieldName] ? 'selectBox' : '')
               "
             >
               <!----- Value as Link ----->
               <span
-                v-if="row.settings_asLink[rowKey] && rowVal"
-                class="row-link text-primary"
+                v-if="row.settings_asLink[fieldName] && fieldValue"
+                class="inline-block w-max row-link text-primary"
                 @click="goto(row.raw)"
               >
-                {{ rowVal }}
+                <b v-if="(l_settings_selectAll_dictionary[row.raw.guid])">
+                  {{ fieldValue }}
+                </b>
+                <p
+                  v-else
+                  class="mb-0"
+                >
+                  {{ fieldValue }}
+                </p>
               </span>
               <!----- end ----->
 
               <!----- Value as Button ----->
               <button
-                v-else-if="row.settings_asButton[rowKey]"
-                class="btn"
-                :class="row.settings_asButton[rowKey]"
+                v-else-if="row.settings_asButton[fieldName]"
+                class="btn w-max"
+                :class="row.settings_asButton[fieldName]"
                 @click="goto(row.raw)"
               >
-                {{ rowVal }}
+                <b v-if="(l_settings_selectAll_dictionary[row.raw.guid])">
+                  {{ fieldValue }}
+                </b>
+                <p
+                  v-else
+                  class="mb-0"
+                >
+                  {{ fieldValue }}
+                </p>
               </button>
               <!----- end ----->
 
               <!----- Value as Select Checkbox ----->
-              <span v-else-if="row.settings_asSelectCheckbox[rowKey]">
+              <span v-else-if="row.settings_selectAll[fieldName]">
                 <input
-                  v-model="row.settings_asSelectCheckbox[rowKey].value"
+                  v-model="row.settings_selectAll[fieldName].value"
                   type="checkbox"
-                  :disabled="asSelectCheckbox_item_disable"
+                  :disabled="disable_selectAll"
                   @input="
                     () =>
-                      $emit(row.settings_asSelectCheckbox[rowKey].emit, row.raw)
+                      $emit(row.settings_selectAll[fieldName].emit, row.raw)
                   "
-                  @change="update_asSelectCheckbox_dictionary(row)"
+                  @change="update_selectAll_dictionary(row)"
                 >
               </span>
 
               <!----- end ----->
 
               <!----- Value as Multiple Buttons ----->
-              <div v-else-if="row.settings_asMultipleButtons[rowKey]">
+              <div 
+                v-else-if="row.settings_asMultipleButtons[fieldName]"
+                class="w-full flex gap-2 justify-center"
+              >
                 <button
-                  v-for="(btnVal, btnIndex) in rowVal"
+                  v-for="(btnVal, btnIndex) in fieldValue"
                   :key="'multipleButton-' + btnIndex"
                   class="btn"
                   :class="btnVal.class"
@@ -119,37 +141,71 @@
               <!----- end ----->
 
               <!----- Custom Buttons ----->
-              <div v-else-if="row.settings_customButtons[rowKey]">
-                <span v-if="rowVal === ''" />
+              <div 
+                v-else-if="row.settings_customButtons[fieldName]"
+                class="w-max"
+              >
+                <span v-if="fieldValue === ''" />
                 <button
-                  v-for="(btn, btnIndex) in row.settings_customButtons[rowKey]"
+                  v-for="(btn, btnIndex) in row.settings_customButtons[fieldName]"
                   v-else
                   v-show="!btn.hide"
                   :key="'btn-' + btnIndex"
-                  class="btn-link mr-2"
+                  class="btn-link mr-2 w-max"
                   :disabled="btn.disable"
                   @click="() => $emit(btn.emit, row.raw)"
                 >
                   <span
                     v-if="btn.iconSvg"
-                    class="ml-2 mr-2 text-lg inline-block align-middle"
-                    v-html="btn.iconSvg"
-                  />
+                    class="ml-2 mr-2 text-lg inline-block align-middle w-4 h-4"
+                  >
+                    <img :src="btn.iconSvg">
+                  </span>
+
                   <span
                     v-if="btn.iconClass"
                     class="ml-2 mr-2 text-lg inline-block align-middle"
                     :class="btn.iconClass"
                   />
-                  <span v-if="btn.label">
+                  <span 
+                    v-if="btn.label" 
+                    class="inline-block w-max"
+                  >
                     {{ btn.label }}
+                  </span>
+                  <span 
+                    v-if="btn.data == true" 
+                    class="inline-block w-max"
+                  >
+                    <b v-if="(l_settings_selectAll_dictionary[row.raw.guid])">
+                      {{ fieldValue }}
+                    </b>
+                    <p
+                      v-else
+                      class="mb-0"
+                    >
+                      {{ fieldValue }}
+                    </p>
                   </span>
                 </button>
               </div>
               <!----- end ----->
 
               <!----- Default Value ----->
-              <span v-else>
-                {{ rowVal }}
+              <span 
+                v-else 
+                class="inline-block w-max"
+              >
+                <span
+                  v-if="(l_settings_selectAll_dictionary[row.raw.guid])"
+                >
+                  <b>{{ fieldValue }}</b>
+                </span>
+                <span
+                  v-else
+                >
+                  {{ fieldValue }}
+                </span>
               </span>
               <!----- end ----->
             </td>
@@ -213,7 +269,7 @@ const props = defineProps({
    *    ],
    *    asLink: true || false, // field name of row.data we want to be as link value
    *    asButton: '', // class name style of button
-   *    asSelectCheckbox: true || false,
+   *    selectAll: true || false,
    *    asMultipleButtons: true || false,
    *    // accepts Array as value (row[{property_name}]) with object format of...
    *    // [
@@ -277,18 +333,26 @@ const emit = defineEmits([
 
 const l_rows = ref<any[]>([]);
 const sortOrderTracker = ref({}) as any;
-const l_settings_asSelectCheckbox_dictionary = ref({}) as any;
-const asSelectCheckbox_selectAll_value = ref(false);
-const asSelectCheckbox_item_disable = ref(false);
+const l_settings_selectAll_dictionary = ref({}) as any;
+const g_settings_selectAll_dictionary = ref({}) as any;
+const selectAll_value = ref(false);
+const disable_selectAll = ref(false)
+
 
 watch(
   () => props.rows,
   () => {
     matchRowDataByColumnField();
+
+    selectAll_value.value = false
+
+    // check if l_rows items exist in selectAll_dictionary
+    // if exist.. do no reset_selectAll
+    // if no rows do not exist.. run reset_selectAll
   },
 );
 watch(
-  () => l_settings_asSelectCheckbox_dictionary.value,
+  () => g_settings_selectAll_dictionary.value,
   (newval) => {
     emit('selectCheckboxUpdate', Object.values(newval));
   },
@@ -314,30 +378,87 @@ const goto = (val: any) => {
   emit('goto', val);
 };
 
-const asSelectCheckbox_selectAll = () => {
-  // disable all checkbox
-  asSelectCheckbox_item_disable.value = asSelectCheckbox_selectAll_value.value
-    ? true
-    : false;
+const enable_selectAll = () => {
+  disable_selectAll.value = false
+}
+const set_disable_selectAll = () => {
+  disable_selectAll.value = true
+}
 
-  // emit for toast update
-  emit('selectCheckboxSelectAll', asSelectCheckbox_selectAll_value.value);
+const reset_selectAll = () => {
+  selectAll_value.value = false
+  selectAll()
+}
+
+const selectAll = () => {
+  if (selectAll_value.value) {
+    // set all checkboxes to TRUE to visually signify all items are selected
+    l_rows.value.forEach((row: any) => {
+      props.columns.forEach((col: any) => {
+        if (col.selectAll) {
+          row.settings_selectAll[col.field] = {
+            emit: col.emit,
+            value: true
+          };
+        }
+      })
+      // add all current items to l_settings_selectAll_dictionary and g_settings_selectAll_dictionary
+      l_settings_selectAll_dictionary.value[row.raw.guid] = row;
+      g_settings_selectAll_dictionary.value[row.raw.guid] = row.raw;
+    })
+  }
+
+  if (!selectAll_value.value) {
+    // set all checkboxes to FALSE to visually signify all items are selected
+    l_rows.value.forEach((row: any) => {
+      props.columns.forEach((col: any) => {
+        if (col.selectAll) {
+          row.settings_selectAll[col.field] = {
+            emit: col.emit,
+            value: false
+          };
+        }
+      })
+      // clear all current items to l_settings_selectAll_dictionary and g_settings_selectAll_dictionary
+      if (
+        l_settings_selectAll_dictionary.value[row.raw.guid] !== undefined &&
+        g_settings_selectAll_dictionary.value[row.raw.guid] !== undefined
+      ) {
+        delete l_settings_selectAll_dictionary.value[row.raw.guid];
+        delete g_settings_selectAll_dictionary.value[row.raw.guid];
+      }
+    })
+  }
+
+  // emit for parent ux stuff
+  emit('selectCheckboxSelectAll', selectAll_value.value);
 };
 
-const check_asSelectCheckbox_dictionary = (key: any) => {
-  return l_settings_asSelectCheckbox_dictionary.value[key] !== undefined
+const check_selectAll_dictionary = (guidKey: any) => {
+  return l_settings_selectAll_dictionary.value[guidKey] !== undefined &&
+    g_settings_selectAll_dictionary.value[guidKey] !== undefined
     ? true
     : false;
 };
 
-const update_asSelectCheckbox_dictionary = (rowObj: any) => {
+const clear_selectAll_distionary = () => {
+  l_settings_selectAll_dictionary.value = {}
+  g_settings_selectAll_dictionary.value = {}
+}
+
+const update_selectAll_dictionary = (rowObj: any) => {
+  // update emitted public data and local/private data used within component
   if (
-    l_settings_asSelectCheckbox_dictionary.value[rowObj.raw.guid] !== undefined
+    l_settings_selectAll_dictionary.value[rowObj.raw.guid] !== undefined &&
+    g_settings_selectAll_dictionary.value[rowObj.raw.guid] !== undefined
   ) {
-    delete l_settings_asSelectCheckbox_dictionary.value[rowObj.raw.guid];
+    delete l_settings_selectAll_dictionary.value[rowObj.raw.guid];
+    delete g_settings_selectAll_dictionary.value[rowObj.raw.guid];
+
     return;
   }
-  l_settings_asSelectCheckbox_dictionary.value[rowObj.raw.guid] = rowObj.raw;
+  l_settings_selectAll_dictionary.value[rowObj.raw.guid] = rowObj;
+  g_settings_selectAll_dictionary.value[rowObj.raw.guid] = rowObj.raw;
 };
 
 const matchRowDataByColumnField = () => {
@@ -350,7 +471,7 @@ const matchRowDataByColumnField = () => {
       settings_asLink: {}, // field_name/column: row_value (object || string)
       settings_asButton: {},
       settings_asMultipleButtons: {},
-      settings_asSelectCheckbox: {},
+      settings_selectAll: {},
     };
 
     props.columns.forEach((col: any) => {
@@ -378,16 +499,17 @@ const matchRowDataByColumnField = () => {
         rowdata.settings_asMultipleButtons[col.field] = true;
       }
 
-      if (col.asSelectCheckbox) {
-        rowdata.settings_asSelectCheckbox[col.field] = {
+      if (col.selectAll) {
+        rowdata.settings_selectAll[col.field] = {
           emit: col.emit,
-          value: check_asSelectCheckbox_dictionary(row.guid),
+          value: check_selectAll_dictionary(row.guid)
         };
       }
     });
     return rowdata;
-  });
+  })
 };
+
 
 const sortColumn = (fieldName: string, sortOrder: string) => {
   sortOrderTracker.value = {};
@@ -409,7 +531,11 @@ const sortColumn = (fieldName: string, sortOrder: string) => {
 
 defineExpose({
   goto,
-  asSelectCheckbox_selectAll,
+  selectAll,
+  clear_selectAll_distionary,
+  reset_selectAll,
+  set_disable_selectAll,
+  enable_selectAll,
 });
 </script>
 
@@ -425,6 +551,12 @@ defineExpose({
   font-size: 0.8rem;
   line-height: 1.2rem;
   vertical-align: text-top;
+}
+
+.table-widget td.selectBox,
+.table-widget th.selectBox {
+  display: revert;
+  width: 1em;
 }
 
 .table-widget table tbody tr {
