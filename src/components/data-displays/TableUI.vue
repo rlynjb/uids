@@ -22,14 +22,14 @@
               <div
                 v-if="col.sortable"
                 class="flex items-center gap-2 cursor-pointer sortable"
-                @click="sortColumn(col.field, sortOrderTracker[col.field])"
+                @click="l_sortColumn(col.field, getSortOrder(col.field))"
               >
                 {{ col.name }}
                 <span
-                  v-if="sortOrderTracker[col.field]"
+                  v-if="getSortOrder(col.field)"
                   :class="
                     'icon ' +
-                      (sortOrderTracker[col.field] === 'asc'
+                      (getSortOrder(col.field) === 'asc'
                         ? 'pg-arrow_up'
                         : 'pg-arrow_down')
                   "
@@ -117,7 +117,7 @@
                     () =>
                       $emit(row.settings_selectAll[fieldName].emit, row.raw)
                   "
-                  @change="update_selectAll_dictionary(row)"
+                  @change="l_update_selectAll_dictionary(row)"
                 >
               </span>
 
@@ -231,16 +231,18 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
 import { onMounted, ref, watch, toRefs } from 'vue';
+import {
+  matchRowDataByColumnField,
+  sortColumn,
+  getSortOrderTracker,
+  setSortOrder,
+  getSortOrder,
+  toggleSelectAll,
+  getRows,
+  getToggleSelectAllDictionary,
+  update_selectAll_dictionary,
+} from '../../utils/TableUI'
 
-interface IColumn {
-  name: string;
-  field: string;
-  align?: string;
-  sortable?: boolean;
-  customButtons?: any[];
-  asLink?: string; // field name of row.data we want to be as link value
-  asButton?: string;
-}
 
 /**
  * A lightweight Table UI component built with 2Dimensional Array and Hash Object.
@@ -331,10 +333,10 @@ const emit = defineEmits([
   'selectCheckboxSelectAll',
 ]);
 
+
 const l_rows = ref<any[]>([]);
-const sortOrderTracker = ref({}) as any;
 const l_settings_selectAll_dictionary = ref({}) as any;
-const g_settings_selectAll_dictionary = ref({}) as any;
+
 const selectAll_value = ref(false);
 const disable_selectAll = ref(false)
 
@@ -342,32 +344,27 @@ const disable_selectAll = ref(false)
 watch(
   () => props.rows,
   () => {
-    matchRowDataByColumnField();
+    l_rows.value = matchRowDataByColumnField(
+      props.rows,
+      props.columns,
+      l_settings_selectAll_dictionary
+    )
 
     selectAll_value.value = false
-
-    // check if l_rows items exist in selectAll_dictionary
-    // if exist.. do no reset_selectAll
-    // if no rows do not exist.. run reset_selectAll
   },
-);
-watch(
-  () => g_settings_selectAll_dictionary.value,
-  (newval) => {
-    emit('selectCheckboxUpdate', Object.values(newval));
-  },
-  {
-    deep: true,
-  },
-);
+)
 
 onMounted(() => {
-  matchRowDataByColumnField();
+  l_rows.value = matchRowDataByColumnField(
+    props.rows,
+    props.columns,
+    l_settings_selectAll_dictionary
+  )
 
-  sortOrderTracker.value = {
-    [props.sortField]: props.sortOrder,
-  };
+  // Set initial column to be sorted
+  setSortOrder(props.sortField, props.sortOrder)
 });
+
 
 const goto = (val: any) => {
   /**
@@ -377,6 +374,12 @@ const goto = (val: any) => {
    */
   emit('goto', val);
 };
+
+const l_sortColumn = (fieldName: string, sortOrder: string) => {
+  sortColumn(fieldName, sortOrder)
+  getSortOrderTracker()
+  emit('sortColumn', { fieldName, sortOrder });
+}
 
 const enable_selectAll = () => {
   disable_selectAll.value = false
@@ -391,143 +394,32 @@ const reset_selectAll = () => {
 }
 
 const selectAll = () => {
-  if (selectAll_value.value) {
-    // set all checkboxes to TRUE to visually signify all items are selected
-    l_rows.value.forEach((row: any) => {
-      props.columns.forEach((col: any) => {
-        if (col.selectAll) {
-          row.settings_selectAll[col.field] = {
-            emit: col.emit,
-            value: true
-          };
-        }
-      })
-      // add all current items to l_settings_selectAll_dictionary and g_settings_selectAll_dictionary
-      l_settings_selectAll_dictionary.value[row.raw.guid] = row;
-      g_settings_selectAll_dictionary.value[row.raw.guid] = row.raw;
-    })
-  }
+  toggleSelectAll(selectAll_value.value)
+  l_rows.value = getRows()
+  l_settings_selectAll_dictionary.value = getToggleSelectAllDictionary()
 
-  if (!selectAll_value.value) {
-    // set all checkboxes to FALSE to visually signify all items are selected
-    l_rows.value.forEach((row: any) => {
-      props.columns.forEach((col: any) => {
-        if (col.selectAll) {
-          row.settings_selectAll[col.field] = {
-            emit: col.emit,
-            value: false
-          };
-        }
-      })
-      // clear all current items to l_settings_selectAll_dictionary and g_settings_selectAll_dictionary
-      if (
-        l_settings_selectAll_dictionary.value[row.raw.guid] !== undefined &&
-        g_settings_selectAll_dictionary.value[row.raw.guid] !== undefined
-      ) {
-        delete l_settings_selectAll_dictionary.value[row.raw.guid];
-        delete g_settings_selectAll_dictionary.value[row.raw.guid];
-      }
-    })
-  }
-
-  // emit for parent ux stuff
+  const cleanSelectAllDictionary = l_settings_selectAll_dictionary.value.map((v: any) => {
+    return v.raw
+  })
+  emit('selectCheckboxUpdate', Object.values(cleanSelectAllDictionary));
   emit('selectCheckboxSelectAll', selectAll_value.value);
 };
 
-const check_selectAll_dictionary = (guidKey: any) => {
-  return l_settings_selectAll_dictionary.value[guidKey] !== undefined &&
-    g_settings_selectAll_dictionary.value[guidKey] !== undefined
-    ? true
-    : false;
-};
 
 const clear_selectAll_distionary = () => {
   l_settings_selectAll_dictionary.value = {}
-  g_settings_selectAll_dictionary.value = {}
 }
 
-const update_selectAll_dictionary = (rowObj: any) => {
-  // update emitted public data and local/private data used within component
-  if (
-    l_settings_selectAll_dictionary.value[rowObj.raw.guid] !== undefined &&
-    g_settings_selectAll_dictionary.value[rowObj.raw.guid] !== undefined
-  ) {
-    delete l_settings_selectAll_dictionary.value[rowObj.raw.guid];
-    delete g_settings_selectAll_dictionary.value[rowObj.raw.guid];
+/*
+  Get called when we want to un/selected item and update dictionary
 
-    return;
-  }
-  l_settings_selectAll_dictionary.value[rowObj.raw.guid] = rowObj;
-  g_settings_selectAll_dictionary.value[rowObj.raw.guid] = rowObj.raw;
-};
+  @param item object Containing item data
+*/
+const l_update_selectAll_dictionary = (rowObj: any) => {
+  update_selectAll_dictionary(rowObj)
+  l_settings_selectAll_dictionary.value = getToggleSelectAllDictionary()
+}
 
-const matchRowDataByColumnField = () => {
-  l_rows.value = props.rows.map((row: any) => {
-    const rowdata: any = {
-      display: {},
-      raw: { ...row },
-      settings_align: {}, // field_name/column: row_value (object || string)
-      settings_customButtons: {}, // field_name/column: row_value (object || string)
-      settings_asLink: {}, // field_name/column: row_value (object || string)
-      settings_asButton: {},
-      settings_asMultipleButtons: {},
-      settings_selectAll: {},
-    };
-
-    props.columns.forEach((col: any) => {
-      rowdata.display[col.field] = row[col.field];
-
-      if (col.align) {
-        rowdata.settings_align[col.field] = col.align;
-      }
-
-      if (col.customButtons) {
-        rowdata.settings_customButtons[col.field] = col.customButtons;
-      }
-
-      // if a link is set, add to settings field as key and
-      // which property value it will be set as a link
-      if (col.asLink) {
-        rowdata.settings_asLink[col.field] = true;
-      }
-
-      if (col.asButton) {
-        rowdata.settings_asButton[col.field] = true;
-      }
-
-      if (col.asMultipleButtons) {
-        rowdata.settings_asMultipleButtons[col.field] = true;
-      }
-
-      if (col.selectAll) {
-        rowdata.settings_selectAll[col.field] = {
-          emit: col.emit,
-          value: check_selectAll_dictionary(row.guid)
-        };
-      }
-    });
-    return rowdata;
-  })
-};
-
-
-const sortColumn = (fieldName: string, sortOrder: string) => {
-  sortOrderTracker.value = {};
-
-  if (sortOrder === 'asc') {
-    sortOrderTracker.value[fieldName] = 'desc';
-  } else {
-    sortOrderTracker.value[fieldName] = 'asc';
-  }
-
-  /**
-   * Triggers when column label is clicked.
-   *
-   * @property {string} fieldName returns name of field.
-   * @property {string} sortOrder returns order of sort.
-   */
-  emit('sortColumn', { fieldName, sortOrder });
-};
 
 defineExpose({
   goto,

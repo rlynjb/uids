@@ -14,6 +14,10 @@ const data = [
   {
     title: "sample title text",
     date: "00/00/00"
+  },
+  {
+    title: "sample title text",
+    date: "00/00/00"
   }
 ]
 
@@ -23,41 +27,40 @@ const data = [
 />
 ```
 
-##### Make a data record a link
+
+##### Text Align a data
 ```js
 const columns = [
   {
     name: "Title",
-    field: "title",
-    link: "id"
+    field: "title"
   },
   {
     name: "Date",
     field: "date"
+  },
+  {
+    name: "Complete",
+    field: "complete",
+    align: "text-center"
   }
 ]
 const data = [
   {
-    id: "asd123",
-    title: "clickable title text",
-    date: "00/00/00"
+    title: "sample title text",
+    date: "00/00/00",
+    complete: "90%"
   }
 ]
-/**
- *  @returns {string} id - The id of data pass to component
- */
-const gotoLink = (id) => {
-  // do stuff here
-}
 
 <TableUI
   :columns="columns"
   :rows="data"
-  @goto="gotoLink"
 />
 ```
 
-##### Display SVG Icon button
+
+##### Add Custom Button to a column
 ```js
 const columns = [
   {
@@ -102,39 +105,7 @@ const deleteItem = (objVal) => {
 ```
 
 
-##### Text align a data record
-```js
-const columns = [
-  {
-    name: "Title",
-    field: "title"
-  },
-  {
-    name: "Date",
-    field: "date"
-  },
-  {
-    name: "Complete",
-    field: "complete",
-    align: "text-center"
-  }
-]
-const data = [
-  {
-    title: "sample title text",
-    date: "00/00/00",
-    complete: "90%"
-  }
-]
-
-<TableUI
-  :columns="columns"
-  :rows="data"
-/>
-```
-
-
-##### Make a column sortable.
+##### Sort a column
 ```js
 const columns = [
   {
@@ -175,3 +146,45 @@ const sortColumn = ({ fieldName, sortOrder}) => {
   @sort-column="sortColumn"
 />
 ```
+
+
+##### Link a data
+```js
+const columns = [
+  {
+    name: "Title",
+    field: "title",
+    link: "id"
+  },
+  {
+    name: "Date",
+    field: "date"
+  }
+]
+const data = [
+  {
+    id: "asd123",
+    title: "clickable title text",
+    date: "00/00/00"
+  }
+]
+/**
+ *  @returns {string} id - The id of data pass to component
+ */
+const gotoLink = (id) => {
+  // do stuff here
+}
+
+<TableUI
+  :columns="columns"
+  :rows="data"
+  @goto="gotoLink"
+/>
+```
+
+
+##### Convert data as Button
+
+##### Select All Data
+
+##### Add Multiple Buttons in a column
