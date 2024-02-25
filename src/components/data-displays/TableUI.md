@@ -24,6 +24,7 @@ const data = [
 <TableUI
   :columns="columns"
   :rows="data"
+  :selectAll="true"
 />
 ```
 

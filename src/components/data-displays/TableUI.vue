@@ -334,10 +334,11 @@ const emit = defineEmits([
 ]);
 
 
-const l_rows = ref<any[]>([]);
-const l_settings_selectAll_dictionary = ref({}) as any;
+const l_rows = ref<any[]>([])
+const l_settings_selectAll_dictionary = ref({}) as any
+const l_sortOrderTracker = ref({}) as any
 
-const selectAll_value = ref(false);
+const selectAll_value = ref(false)
 const disable_selectAll = ref(false)
 
 
@@ -377,7 +378,7 @@ const goto = (val: any) => {
 
 const l_sortColumn = (fieldName: string, sortOrder: string) => {
   sortColumn(fieldName, sortOrder)
-  getSortOrderTracker()
+  l_sortOrderTracker.value = getSortOrderTracker()
   emit('sortColumn', { fieldName, sortOrder });
 }
 
